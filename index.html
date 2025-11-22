@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QC846KQX9T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);} 
+      gtag('js', new Date());
+      gtag('config', 'G-QC846KQX9T');
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Free SEO Checker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.1"></script>
+    <style>
+      :root {
+        --bg: #f6f7fb;
+        --border: #dfe3eb;
+        --text: #1f2330;
+        --muted: #1e4084;
+        --primary: #243d72;
+        --primary-700: #5a46ca;
+        --green: #21c185;
+        --orange: #ff9f43;
+        --red: #ef4444;
+        --card: #ffffff;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        background: var(--bg);
+        color: var(--text);
+      }
+      .topbar {
+        height: 60px;
+        background: var(--primary);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+      }
+      .topbar .brand { font-weight: 700; letter-spacing: .2px; }
+      .topbar .brand img { height: 28px; display: block; }
+      .header-actions { display: flex; align-items: center; gap: 22px; }
+      .header-btn { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-weight: 600; font-size: 15px; opacity: .95; }
+      .header-btn img { width: 18px; height: 18px; object-fit: contain; }
+      .container {
+        max-width: 1100px;
+        margin: 24px auto 40px;
+        padding: 0 12px;
+      }
+      .row { display: flex; gap: 20px; align-items: flex-start; }
+      .col { flex: 1; }
+      .col-2 { flex: 2; }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+      }
+      /* Sticky right column */
+      .sticky-column { position: sticky; top: 24px; height: fit-content; align-self: flex-start; }
+      @media (max-width: 900px) { .sticky-column { position: static; } }
+      .section-title {
+        font-weight: 600;
+        margin: 16px 0 8px;
+        color: var(--muted);
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: .6px;
+      }
+      .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      label { display: block; font-size: 12px; color: var(--text); font-weight: 700; margin-bottom: 6px; }
+      input[type=text], textarea, input[type=url] {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 14px;
+        outline: none;
+        background: #fff;
+        font-family: inherit;
+      }
+      textarea { resize: vertical; }
+      .title-box { resize: none; }
+      .content-editor { min-height: 220px; }
+      .platforms { display: flex; gap: 10px; margin-bottom: 12px; }
+      .chip {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 13px;
+        color: var(--text);
+        cursor: default;
+      }
+      .btn {
+        background: var(--primary);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        padding: 14px 20px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background .15s ease;
+      }
+      .btn:hover { background: var(--primary-700); }
+      .btn-full { width: 100%; }
+      .score-box { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .score-box { padding: 10px 12px; }
+      .score-left { display:flex; flex-direction:column; }
+      .score-right { display:flex; align-items:center; justify-content:center; gap:10px; flex:1; }
+      .score-number { font-size: 44px; font-weight: 800; color: var(--green); }
+      .score-icon { width: 44px; height: 44px; object-fit: contain; }
+      .score-message { color: var(--green); font-size: 16px; font-weight: 600; text-align: center; }
+      /* Tone overrides for dynamic score coloring */
+      .score-number.tone-green { color: var(--green); }
+      .score-number.tone-orange { color: var(--orange); }
+      .score-number.tone-red { color: var(--red); }
+      .score-message.tone-green { color: var(--green); }
+      .score-message.tone-orange { color: var(--orange); }
+      .score-message.tone-red { color: var(--red); }
+      /* Floating sticky counter for content */
+      .content-header-row { align-items: center; }
+      .count-floating { position: sticky; top: 8px; right: 0; background: rgba(255,255,255,.85); border: none; border-radius: 8px; padding: 2px 8px; }
+      .hint { color: var(--muted); font-size: 12px; }
+      .score-box.center { justify-content: center; }
+      .legend-title { font-weight: 700; margin: 4px 0 8px; text-align: center; }
+      .legend-list { list-style: none; padding: 0; margin: 0; }
+      .legend-item { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; font-size: 14px; }
+      .dot { width: 10px; height: 10px; border-radius: 999px; margin-top: 5px; }
+      .dot.green { background: var(--green); }
+      .dot.orange { background: var(--orange); }
+      .dot.red { background: var(--red); }
+      .criteria-title { font-weight: 600; margin: 8px 0; }
+      .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px 10px; text-align: center; }
+      .empty-icon { font-size: 48px; margin-bottom: 12px; }
+      .empty-text { color: var(--red); }
+      .footer { text-align: center; color: var(--muted); font-size: 12px; padding: 20px 0; }
+      .help { color: #f3f7ff; font-size: 12px; cursor: pointer; text-decoration: none; font-weight: 400; }
+      /* Card variants */
+      .card.no-border { border: none; }
+      .padded-lg { padding: 20px; }
+      .help:hover { text-decoration: underline; font-weight: 700; }
+      .flex-between { display: flex; justify-content: space-between; align-items: center; }
+      .tiny { font-size: 12px; color: #8a93a5; }
+      .score-left { align-items: center; }
+      @keyframes pulseFade { 0% { opacity: .6; } 50% { opacity: 1; } 100% { opacity: .6; } }
+      .score-number.loading { color: var(--muted); animation: pulseFade .6s ease infinite; }
+      
+      /* Ẩn/hiện thông tin đếm từ */
+      .field-info { 
+        opacity: 0; 
+        visibility: hidden; 
+        transition: all 0.3s ease; 
+        transform: translateY(-5px);
+      }
+      .field-container:focus-within .field-info { 
+        opacity: 1; 
+        visibility: visible; 
+        transform: translateY(0);
+      }
+      /* Hiển thị bộ đếm ngang với tiêu đề Nội dung */
+      .field-container { position: relative; }
+      .content-section-header .field-info { opacity: 1; visibility: visible; transform: none; }
+      
+      /* Hiệu ứng màu xanh khi đạt yêu cầu SEO */
+      .field-info.seo-good { 
+        color: var(--green); 
+        font-weight: 600;
+      }
+      .field-info.seo-good .tiny:first-child { 
+        color: var(--green); 
+      }
+      /* Coffee modal */
+      .coffee-modal { position: fixed; inset: 0; background: rgba(31,35,48,.42); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+      .coffee-modal.hidden { display: none; }
+      .coffee-dialog { position: relative; background: #fff; border-radius: 16px; padding: 40px 24px; max-width: 640px; width: 92%; box-shadow: 0 20px 40px rgba(0,0,0,.20); text-align: center; border: 2px solid rgba(108,89,217,.3); }
+      .coffee-close { position: absolute; top: 14px; right: 16px; font-size: 18px; color: #8a93a5; cursor: pointer; }
+      .coffee-hero { width: 100%; max-height: 320px; object-fit: contain; margin: 10px 0 22px; }
+      .coffee-title { font-weight: 800; color: var(--primary); letter-spacing: 2px; margin-bottom: 8px; font-size: 18px; text-transform: uppercase; }
+      .coffee-hey { font-weight: 800; color: var(--primary); letter-spacing: .6px; margin: 6px 0 12px; font-size: 22px; }
+      .coffee-sub { color: #6b7280; font-size: 14px; margin-bottom: 14px; line-height: 1.6; padding: 0 30px; }
+      .coffee-sub small { display: block; color: #8a93a5; margin-top: 6px; font-size: inherit;}
+      .coffee-sub.coffee-support { margin-top: 8px; margin-bottom: 6px; }
+      .coffee-sub.coffee-note { margin-top: 14px; }
+      .coffee-actions .btn { min-height: 50px; border-radius: 16px; padding: 14px 22px; font-size: 14px; box-shadow: 0 6px 16px rgba(108,89,217,.35); display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+      .coffee-actions .btn:hover { text-decoration: none; }
+      .coffee-actions .btn .cup { font-size: 20px; }
+      /* Floating Buy me a coffee button */
+      .coffee-fab { position: fixed; right: 24px; bottom: 24px; background: var(--primary); color: #fff; border: 2px solid rgba(108,89,217,.45); border-radius: 999px; padding: 10px 12px; font-weight: 300; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 10px 24px rgba(36,61,114,.35); z-index: 9998; text-decoration: none; font-size: 14px; }
+      .coffee-fab:hover { background: var(--primary-700); }
+      .coffee-fab .divider { width: 1px; height: 18px; background: rgba(255,255,255,.5); }
+      .coffee-fab .icon { width: 20px; height: 20px; object-fit: contain; }
+      .coffee-fab .emoji { font-size: 20px; line-height: 1; }
+      #nextLink, #coffeeFab { display: none !important; }
+
+      /* Guide modal */
+      .guide-modal { position: fixed; inset: 0; background: rgba(31,35,48,.42); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+      .guide-modal.hidden { display: none; }
+      .guide-dialog { position: relative; background: #fff; border-radius: 16px; padding: 26px 22px; max-width: 720px; width: 92%; box-shadow: 0 20px 40px rgba(0,0,0,.20); border: 2px solid rgba(108,89,217,.3); user-select: none; }
+      .guide-close { position: absolute; top: 12px; right: 14px; font-size: 22px; color: #8a93a5; cursor: pointer; }
+      .guide-title { font-weight: 800; color: var(--primary); letter-spacing: .6px; margin: 4px 0 14px; font-size: 18px; text-align: center; }
+      .guide-list { list-style: disc; padding-left: 22px; margin: 0; color: #374151; font-size: 14px; line-height: 1.6; }
+      .guide-list li { margin: 6px 0; }
+      .guide-table { width: 100%; border-collapse: collapse; margin: 0; color: #374151; font-size: 14px; line-height: 1.6; table-layout: fixed; }
+      .guide-table th, .guide-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+      .guide-table th { text-align: left; color: var(--primary); font-weight: 700; }
+      .guide-table col.criteria-col { width: 33.33%; }
+      .guide-table col.content-col { width: 66.67%; }
+
+      /* Updates modal */
+      .updates-modal { position: fixed; inset: 0; background: rgba(31,35,48,.42); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+      .updates-modal.hidden { display: none; }
+      .updates-dialog { position: relative; background: #fff; border-radius: 16px; padding: 0; max-width: 980px; width: 94%; box-shadow: 0 20px 40px rgba(0,0,0,.20); border: 2px solid rgba(108,89,217,.3); overflow: hidden; }
+      .updates-close { position: absolute; top: 12px; right: 14px; font-size: 22px; color: #8a93a5; cursor: pointer; }
+      .updates-img { display: block; width: 100%; height: auto; }
+  
+  </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand"><img src="Icon SEO point/logo-ea.png" alt="Express Agency" /></div>
+      <div class="header-actions">
+        <a id="guideLink" href="#guide" class="header-btn">
+          <img src="Icon SEO point/vuesax/linear/document-text.png" alt="Guide" />
+          <span>Hướng dẫn</span>
+        </a>
+        <a id="nextLink" href="#next" class="header-btn">
+          <img src="Icon SEO point/Icon.png" alt="What's next" />
+          <span>What's next?</span>
+        </a>
+      </div>
+    </header>
+    <div id="app" class="container">
+
+      <div class="row">
+        <!-- Left: Form -->
+        <div class="col-2 card">
+          <div class="section-title">Thuộc tính</div>
+          <div class="grid-2">
+            <div class="field-container">
+              <label>Từ khóa chính</label>
+              <input type="text" @keydown="selectAllShortcut" v-model.trim="mainKeyword" placeholder="VD: Laptop giá rẻ" />
+              <div class="flex-between field-info" :class="{ 'seo-good': isMainKeywordGood() }">
+                <div class="tiny">3–5 từ · dưới 20 ký tự</div>
+                <div class="tiny">Số từ: {{ countWords(mainKeyword) }}</div>
+              </div>
+            </div>
+            <div class="field-container">
+              <label>Từ khóa phụ</label>
+              <input type="text" @keydown="selectAllShortcut" v-model.trim="secondaryKeyword" placeholder="VD: Laptop sinh viên" />
+              <div class="flex-between field-info" :class="{ 'seo-good': isSecondaryKeywordGood() }">
+                <div class="tiny">3–5 từ · dưới 20 ký tự</div>
+                <div class="tiny">Số từ: {{ countWords(secondaryKeyword) }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:14px"></div>
+          <div class="field-container">
+            <label>Tiêu đề bài viết</label>
+            <textarea rows="2" class="title-box" @keydown="selectAllShortcut" v-model.trim="title" placeholder="Nhập tiêu đề bài viết"></textarea>
+            <div class="flex-between field-info" :class="{ 'seo-good': isTitleGood() }">
+              <div class="tiny">30 – 60 ký tự là tối ưu</div>
+              <div class="tiny">Số ký tự: {{ countChars(title) }}</div>
+            </div>
+          </div>
+
+          <div style="margin-top:14px"></div>
+          <div class="field-container">
+            <label>Mô tả (Meta Description)</label>
+            <textarea rows="3" @input="autoResize($event)" @keydown="selectAllShortcut" v-model.trim="meta" placeholder="Nhập mô tả ngắn"></textarea>
+            <div class="flex-between field-info" :class="{ 'seo-good': isMetaGood() }">
+              <div class="tiny">30 – 50 từ là đạt yêu cầu</div>
+              <div class="tiny">Số từ: {{ countWords(meta) }}</div>
+            </div>
+          </div>
+
+          <div style="margin-top:14px"></div>
+          <div>
+            <label>URL bài viết</label>
+            <input type="url" @keydown="selectAllShortcut" @paste="normalizeUrlPaste" @focus="ensureUrlPrefix" v-model.trim="url" placeholder="http://" />
+          </div>
+
+          <div class="flex-between content-section-header" style="margin-top:16px; align-items:center">
+            <div class="section-title" style="margin:0">Nội dung</div>
+            <div class="tiny field-info" :class="{ 'seo-good': isContentGood() }">Số từ: {{ contentWordCount() }}</div>
+          </div>
+          <div class="field-container">
+            <textarea id="editor" class="content-editor" placeholder="Dán nội dung bài viết hoặc viết tại đây"></textarea>
+          </div>
+        </div>
+
+        <!-- Right: Score -->
+        <div class="col card sticky-column">
+          <div class="flex-between" style="margin-bottom:12px">
+            <button class="btn btn-full" @click="checkSEO">Kiểm tra SEO (Ctrl + Enter)</button>
+          </div>
+
+          <div class="score-box" :class="{ center: noData }">
+            <div class="score-left">
+              <div class="tiny">Điểm SEO</div>
+              <div class="score-number" :class="[{ loading: isScoring }, toneClass]">{{ noData ? 'N/A' : (isScoring ? '...' : formatScore(score)) }}</div>
+            </div>
+            <div class="score-right" v-if="!noData">
+              <img v-if="!noData && scoreIcon" class="score-icon" :src="scoreIcon" alt="SEO icon" />
+              <div class="score-message" :class="toneClass" v-if="!noData">{{ scoreHint }}</div>
+            </div>
+          </div>
+
+            <div class="card no-border padded-lg" style="margin-top:14px">
+            <div class="legend-title">Đánh giá chi tiết</div>
+            <div v-if="noData" class="empty-state">
+              <div class="empty-icon">⚠️</div>
+              <div class="empty-text">Không có dữ liệu<br/>Vui lòng điền đủ nội dung</div>
+            </div>
+            <template v-else>
+              <div>
+                <div class="criteria-title">Rất tốt</div>
+                <ul class="legend-list">
+                  <li class="legend-item" v-for="item in lists.green" :key="item.key">
+                    <span class="dot green"></span>
+                    <span>{{ item.msg }}</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="stack-section" v-if="lists.orange.length">
+                <div class="criteria-title">Cần cải thiện</div>
+                <ul class="legend-list">
+                  <li class="legend-item" v-for="item in lists.orange" :key="item.key">
+                    <span class="dot orange"></span>
+                    <span>{{ item.msg }}</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="stack-section" v-if="lists.red.length">
+                <div class="criteria-title">Không đạt</div>
+                <ul class="legend-list">
+                  <li class="legend-item" v-for="item in lists.red" :key="item.key">
+                    <span class="dot red"></span>
+                    <span>{{ item.msg }}</span>
+                  </li>
+                </ul>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">CheckSeoVn v1.1.8 · Thanks for your support coffee :x</div>
+    </div>
+
+    <!-- Floating Buy me a coffee button -->
+    <a id="coffeeFab" href="#" class="coffee-fab" aria-label="Buy me a coffee">
+      <span class="emoji">☕️</span>
+      <span class="divider"></span>
+      <span>Buy me a coffee</span>
+    </a>
+
+    <!-- Guide Modal -->
+    <div id="guideModal" class="guide-modal hidden" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+      <div class="guide-dialog">
+        <div id="guideClose" class="guide-close" aria-label="Đóng">×</div>
+        <div id="guideTitle" class="guide-title">HƯỚNG DẪN ĐẠT ĐIỂM SEO TỐI ĐA</div>
+        <table class="guide-table" aria-label="Hướng dẫn SEO">
+          <colgroup>
+            <col class="criteria-col" />
+            <col class="content-col" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Tiêu chí</th>
+              <th>Nội dung</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Từ khóa chính</td>
+              <td>3–5 từ, dưới 20 ký tự.</td>
+            </tr>
+            <tr>
+              <td>Từ khóa phụ</td>
+              <td>3–5 từ, dưới 20 ký tự (nên có).</td>
+            </tr>
+            <tr>
+              <td>Mật độ từ khóa</td>
+              <td>Từ 2,5% đến 6,0% tổng số từ trong nội dung bài viết. Công thức: Mật độ = (Số từ trong từ khóa × Số lần xuất hiện) / Tổng số từ × 100%. Ví dụ: Bài 1000 từ, từ khóa “điện thoại di động” (4 từ) xuất hiện 7 lần → (4×7)/1000×100 = 2,8%.</td>
+            </tr>
+            <tr>
+              <td>Tiêu đề</td>
+              <td>30–60 ký tự, từ khóa chính ở đầu tiêu đề.</td>
+            </tr>
+            <tr>
+              <td>Mô tả meta</td>
+              <td>30–50 từ, chứa từ khóa chính (có thể thêm từ khóa phụ).</td>
+            </tr>
+            <tr>
+              <td>Nội dung</td>
+              <td>300–1800 từ, chia đoạn ngắn, dễ đọc.</td>
+            </tr>
+            <tr>
+              <td>H1</td>
+              <td>Có chứa từ khóa chính.</td>
+            </tr>
+            <tr>
+              <td>H2 đầu tiên</td>
+              <td>Nên có từ khóa chính.</td>
+            </tr>
+            <tr>
+              <td>Đoạn đầu &amp; cuối bài</td>
+              <td>Phải xuất hiện từ khóa chính trong 100 từ đầu và 100 từ cuối bài viết.</td>
+            </tr>
+            <tr>
+              <td>Hình ảnh</td>
+              <td>Có ít nhất 1 ảnh, thẻ ALT chứa từ khóa chính.</td>
+            </tr>
+            <tr>
+              <td>Liên kết nội bộ</td>
+              <td>Có link tới bài khác trong cùng website.</td>
+            </tr>
+            <tr>
+              <td>Liên kết ngoài</td>
+              <td>Có link tới nguồn đáng tin cậy khác domain.</td>
+            </tr>
+            <tr>
+              <td>Bố cục</td>
+              <td>Rõ ràng, dễ nhìn, có tiêu đề phụ và bullet points.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Updates Modal (What's next?) -->
+    <div id="updatesModal" class="updates-modal hidden" role="dialog" aria-modal="true">
+      <div class="updates-dialog">
+        <div id="updatesClose" class="updates-close" aria-label="Đóng">×</div>
+        <img src="Icon SEO point/WhatNext.jpg" alt="What's next" class="updates-img" />
+      </div>
+    </div>
+
+    <!-- Coffee Modal -->
+    <div id="coffeeModal" class="coffee-modal hidden" role="dialog" aria-modal="true" aria-labelledby="coffeeTitle">
+      <div class="coffee-dialog">
+        <div id="coffeeClose" class="coffee-close" aria-label="Đóng">×</div>
+        <div id="coffeeTitle" class="coffee-title">IN PROGRESS</div>
+        <img src="Icon SEO point/Group 5.png" alt="Coffee illustration" class="coffee-hero" />
+        <div class="coffee-body">
+          <div class="coffee-hey">HEYYOOOO!</div>
+          <div class="coffee-sub">Xin chào, tớ là Như Quỳnh - một cô gái làm truyền thông và yêu thích lập trình. Cảm ơn bạn đã quan tâm đến sản phẩm này ❤️ Tớ sẽ cố gắng update tiếp các tính năng “so cool” trong tương lai!</div>
+          <div class="coffee-sub coffee-support"><small>If you like & support, feel free</small></div>
+        </div>
+        <div class="coffee-actions">
+          <a class="btn" href="https://buymeacoffee.com/nhuquynh" target="_blank" rel="noopener"><span>☕</span><span>BUY ME A COFFEE</span></a>
+        </div>
+        <div class="coffee-sub coffee-note"><small>and you will be listed in PREMIUM to try new features soon.</small></div>
+      </div>
+    </div>
+
+    <!-- TinyMCE (community) via jsDelivr -->
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js"></script>
+    <!-- VueJS via CDN -->
+    <script src="https://unpkg.com/vue@3.4.27/dist/vue.global.prod.js"></script>
+    <script>
+      const { createApp } = Vue;
+
+      function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      }
+
+      function stripTags(html) {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = html || '';
+        return tmp.textContent || tmp.innerText || '';
+      }
+
+      function wordCount(text) {
+        const cleaned = (text || '').replace(/\n/g, ' ').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+        if (!cleaned) return 0;
+        return cleaned.split(/\s+/).length;
+      }
+
+      function toLower(text) { return (text || '').toLowerCase(); }
+
+      const app = createApp({
+        data() {
+          return {
+            mainKeyword: '',
+            secondaryKeyword: '',
+            title: '',
+            meta: '',
+            url: 'http://',
+            content: '',
+            score: 0,
+            scoreHint: '',
+            scoreIcon: '',
+            scoreTone: 'green',
+            lists: { green: [], orange: [], red: [] },
+            objectUrls: [],
+            noData: true,
+            isScoring: false,
+          };
+        },
+        computed: {
+          toneClass() {
+            if (this.noData) return '';
+            const t = this.scoreTone || 'green';
+            return `tone-${t}`;
+          }
+        },
+        mounted() {
+          // Load cached values then init editor
+          this.loadCached();
+          this.initEditor();
+          // Phím tắt toàn cục Ctrl/Cmd + Enter
+          window.addEventListener('keydown', this.onShortcut);
+          // Ctrl/Cmd + A: chọn toàn bộ nội dung trong input/textarea
+          window.addEventListener('keydown', this.selectAllShortcut);
+          // Cảnh báo khi reload/đóng trang
+          window.addEventListener('beforeunload', this.onBeforeUnload);
+          // Thu hồi Object URL khi đóng trang
+          window.addEventListener('unload', this.revokeObjectUrls);
+          this.checkSEO();
+          // Bind Buy me a coffee modal
+          try {
+            const link = document.getElementById('coffeeLink');
+            const guideLink = document.getElementById('guideLink');
+            const guideModal = document.getElementById('guideModal');
+            const guideClose = document.getElementById('guideClose');
+            const fab = document.getElementById('coffeeFab');
+            const modal = document.getElementById('coffeeModal');
+            const close = document.getElementById('coffeeClose');
+            if (link && modal) {
+              link.addEventListener('click', (e) => { e.preventDefault(); modal.classList.remove('hidden'); });
+            }
+            if (fab && modal) {
+              fab.addEventListener('click', (e) => { e.preventDefault(); modal.classList.remove('hidden'); });
+            }
+            // Guide modal bindings
+            if (guideLink && guideModal) {
+              guideLink.addEventListener('click', (e) => { e.preventDefault(); guideModal.classList.remove('hidden'); });
+            }
+            if (guideClose) guideClose.addEventListener('click', () => guideModal.classList.add('hidden'));
+            if (guideModal) guideModal.addEventListener('click', (e) => { if (e.target === guideModal) guideModal.classList.add('hidden'); });
+            // Updates modal bindings (What's next?)
+            const nextLink = document.getElementById('nextLink');
+            const updatesModal = document.getElementById('updatesModal');
+            const updatesClose = document.getElementById('updatesClose');
+            if (nextLink && updatesModal) {
+              nextLink.addEventListener('click', (e) => { e.preventDefault(); updatesModal.classList.remove('hidden'); });
+            }
+            if (updatesClose) updatesClose.addEventListener('click', () => updatesModal.classList.add('hidden'));
+            if (updatesModal) updatesModal.addEventListener('click', (e) => { if (e.target === updatesModal) updatesModal.classList.add('hidden'); });
+            // Prevent selection & copy inside guide dialog
+            if (guideModal) {
+              const dialog = guideModal.querySelector('.guide-dialog');
+              if (dialog) {
+                dialog.addEventListener('copy', (e) => e.preventDefault());
+                dialog.addEventListener('cut', (e) => e.preventDefault());
+                dialog.addEventListener('selectstart', (e) => e.preventDefault());
+                dialog.addEventListener('keydown', (e) => {
+                  if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'x')) e.preventDefault();
+                });
+              }
+            }
+            if (close) close.addEventListener('click', () => modal.classList.add('hidden'));
+            if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+          } catch {}
+        },
+        watch: {
+          mainKeyword(val) { try { localStorage.setItem('sc_mainKeyword', val || ''); } catch {} },
+          secondaryKeyword(val) { try { localStorage.setItem('sc_secondaryKeyword', val || ''); } catch {} },
+          title(val) { try { localStorage.setItem('sc_title', val || ''); } catch {} },
+          meta(val) { try { localStorage.setItem('sc_meta', val || ''); } catch {} },
+          url(val) { try { localStorage.setItem('sc_url', val || ''); } catch {} },
+          content(val) { try { localStorage.setItem('sc_content', val || ''); } catch {} },
+        },
+        methods: {
+          autoResize(e) {
+            const t = e.target; t.style.height = 'auto'; t.style.height = t.scrollHeight + 'px';
+          },
+          loadCached() {
+            try {
+              this.mainKeyword = localStorage.getItem('sc_mainKeyword') || '';
+              this.secondaryKeyword = localStorage.getItem('sc_secondaryKeyword') || '';
+              this.title = localStorage.getItem('sc_title') || '';
+              this.meta = localStorage.getItem('sc_meta') || '';
+              this.url = localStorage.getItem('sc_url') || '';
+              if (!this.url) this.url = 'http://';
+              this.content = localStorage.getItem('sc_content') || '';
+            } catch {}
+          },
+          selectAllShortcut(e) {
+            const isSelectAll = (e.ctrlKey || e.metaKey) && (e.key === 'a' || e.key === 'A');
+            if (!isSelectAll) return;
+            const el = e.target;
+            if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA')) {
+              e.preventDefault();
+              try {
+                if (typeof el.select === 'function') {
+                  el.select();
+                } else if (typeof el.setSelectionRange === 'function') {
+                  const val = el.value || '';
+                  el.setSelectionRange(0, val.length);
+                }
+              } catch {}
+            }
+          },
+          ensureUrlPrefix(e) {
+            try {
+              const val = (this.url || '').trim();
+              if (!val) this.url = 'http://';
+            } catch {}
+          },
+          normalizeUrlPaste(e) {
+            try {
+              const text = (e.clipboardData || window.clipboardData).getData('text');
+              if (!text) return;
+              e.preventDefault();
+              const sanitized = text.trim().replace(/^https?:\/\/(.*)$/i, '$1');
+              this.url = sanitized;
+            } catch {}
+          },
+          countWords(v) { return wordCount((v || '').trim()); },
+          countChars(v) { try { return (v || '').trim().length; } catch { return 0; } },
+          contentWordCount() { return wordCount(stripTags(this.content || '')); },
+          initEditor() {
+            const vm = this;
+            tinymce.init({
+              selector: '#editor',
+              plugins: 'autoresize link lists image table code',
+              toolbar: 'undo redo | blocks | bold italic underline | link image | numlist bullist | table | code',
+              menubar: false,
+              branding: false,
+              readonly: false,
+              // Make pasted/uploaded images fit the editor iframe width
+              content_style: 'body{padding:12px;} img{width:100% !important;height:auto !important;display:block;}',
+              image_dimensions: false,
+              object_resizing: false,
+              // TinyMCE v6 expects a Promise-based images_upload_handler
+              images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
+                try {
+                  const blob = blobInfo.blob();
+                  const url = URL.createObjectURL(blob);
+                  vm.objectUrls.push(url);
+                  // Optionally report progress; for Object URLs, it's instant
+                  if (typeof progress === 'function') { progress(100); }
+                  resolve(url);
+                } catch (err) {
+                  reject('Upload failed');
+                }
+              }),
+              setup(editor) {
+                editor.on('init', () => { editor.setContent(vm.content); });
+                editor.on('change keyup undo redo', () => { vm.content = editor.getContent(); });
+                editor.on('keydown', (e) => {
+                  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); vm.checkSEO(); }
+                });
+                // Normalize image nodes after paste/upload to ensure full-width
+                const normalizeImages = () => {
+                  try {
+                    const imgs = editor.dom.select('img');
+                    imgs.forEach(img => {
+                      img.removeAttribute('width');
+                      img.removeAttribute('height');
+                      img.style.width = '100%';
+                      img.style.height = 'auto';
+                      img.style.display = 'block';
+                    });
+                  } catch {}
+                };
+                editor.on('PastePost', normalizeImages);
+                editor.on('ObjectSelected', normalizeImages);
+                editor.on('NodeChange', normalizeImages);
+                // Ensure heading applies only to selected text by splitting the block
+                editor.on('BeforeExecCommand', (e) => {
+                  const cmd = e.command;
+                  const val = e.value;
+                  if ((cmd === 'mceBlock' || cmd === 'FormatBlock') && /^h[1-6]$/i.test(String(val || ''))) {
+                    const selection = editor.selection;
+                    if (selection && !selection.isCollapsed()) {
+                      const level = String(val).toLowerCase().replace('h','') || '1';
+                      const html = selection.getContent({ format: 'html' });
+                      if (html) {
+                        e.preventDefault();
+                        editor.undoManager.transact(() => {
+                          selection.setContent(`<h${level}>${html}</h${level}>`);
+                        });
+                      }
+                    }
+                  }
+                });
+              }
+            });
+          },
+          onShortcut(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); this.checkSEO(); }
+          },
+          onBeforeUnload(e) {
+            e.preventDefault();
+            e.returnValue = 'Dữ liệu sẽ bị mất, bạn có chắc muốn thoát?';
+            return 'Dữ liệu sẽ bị mất, bạn có chắc muốn thoát?';
+          },
+          revokeObjectUrls() {
+            (this.objectUrls || []).forEach(u => { try { URL.revokeObjectURL(u); } catch {} });
+          },
+          checkSEO() {
+            this.isScoring = true;
+            const results = [];
+            const kMain = toLower(this.mainKeyword.trim());
+            const kSub = toLower(this.secondaryKeyword.trim());
+            const title = this.title || '';
+            const meta = this.meta || '';
+            const url = this.url || '';
+            const raw = this.content || '';
+            // Prepare content text and DOM
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = raw;
+            const text = stripTags(raw);
+
+            // No data state: nếu thiếu từ khóa chính hoặc nội dung rỗng
+            const noKeyword = !kMain;
+            const noContent = !text.trim();
+            this.noData = noKeyword || noContent;
+            if (this.noData) {
+              this.score = 0;
+              this.scoreHint = '';
+              this.lists = { green: [], orange: [], red: [] };
+              this.isScoring = false;
+              return;
+            }
+
+            // 1) Chuẩn từ khóa chính/phụ: 3–5 từ và <20 ký tự (0.5)
+            const mainWords = wordCount(kMain);
+            const subWords = wordCount(kSub);
+            const mainChars = (kMain || '').length;
+            const subChars = (kSub || '').length;
+            const mainStd = mainWords >= 3 && mainWords <= 5 && mainChars < 20;
+            const subStd = subWords >= 3 && subWords <= 5 && subChars < 20;
+            let r1Status = 'red', r1Pts = 0, r1Msg = 'Từ khóa chính/phụ chưa đạt chuẩn (3–5 từ, <20 ký tự)';
+            if (mainStd && subStd) {
+              r1Status = 'green'; r1Pts = 0.5; r1Msg = 'Từ khóa chính/phụ đạt chuẩn (3–5 từ, <20 ký tự)';
+            } else if (mainStd || subStd) {
+              r1Status = 'orange'; r1Pts = 0.25;
+              r1Msg = (!subStd && subWords === 0)
+                ? 'Nên có từ khoá phụ'
+                : 'Nên chuẩn hóa từ khóa (3–5 từ, <20 ký tự)';
+            }
+            results.push({ key: 1, status: r1Status, pts: r1Pts, msg: r1Msg });
+
+            // 2) Độ dài tiêu đề (0.5)
+            const titleLen = (title || '').trim().length;
+            {
+              let r2 = { key:2, status:'red', pts:0, msg:'Chưa có tiêu đề' };
+              if (titleLen === 0) {
+                r2 = { key:2, status:'red', pts:0, msg:'Chưa có tiêu đề' };
+              } else if (titleLen >= 30 && titleLen <= 60) {
+                r2 = { key:2, status:'green', pts:0.5, msg:'Độ dài tiêu đề tốt (30–60 ký tự)' };
+              } else if (titleLen >= 20 && titleLen <= 29) {
+                r2 = { key:2, status:'orange', pts:0.25, msg:'tiêu đề quá ngắn' };
+              } else if (titleLen < 20) {
+                r2 = { key:2, status:'red', pts:0, msg:'tiêu đề quá ngắn' };
+              } else if (titleLen >= 61 && titleLen <= 70) {
+                r2 = { key:2, status:'orange', pts:0.25, msg:'tiêu đề quá dài' };
+              } else {
+                r2 = { key:2, status:'red', pts:0, msg:'tiêu đề quá dài' };
+              }
+              results.push(r2);
+            }
+
+            // 3) Độ dài mô tả meta theo số từ (0.5)
+            const metaWords = wordCount((meta || '').trim());
+            let r3 = { key:3, status:'red', pts:0, msg:'Mô tả quá ngắn (<30 từ)' };
+            if (metaWords >= 30 && metaWords <= 50) {
+              r3 = { key:3, status:'green', pts:0.5, msg:'Độ dài mô tả đạt yêu cầu (30–50 từ)' };
+            } else if (metaWords > 50) {
+              r3 = { key:3, status:'red', pts:0, msg:'Mô tả quá dài (>50 từ)' };
+            }
+            results.push(r3);
+
+            // 4) Độ dài nội dung (số từ) (0.5)
+            const words = wordCount(text);
+            results.push(this.rangeResult(4, words, [300,1800], [[150,299],[1801,Infinity]], 0.5,
+              'Độ dài nội dung tốt (300–1800 từ)', 'Nên điều chỉnh độ dài nội dung', 'Nội dung quá ngắn'));
+
+            // 5) Từ khóa chính ở đầu tiêu đề (1.0)
+            const tl = toLower(title.trim());
+            let r5 = { key:5, status:'red', pts:0, msg:'Tiêu đề không chứa từ khóa chính' };
+            if (tl.startsWith(kMain) && kMain) {
+              r5 = { key:5, status:'green', pts:1.0, msg:'Từ khóa chính nằm ngay đầu tiêu đề' };
+            } else if (kMain && tl.includes(kMain)) {
+              r5 = { key:5, status:'orange', pts:0.5, msg:'Nên đưa từ khóa chính lên đầu tiêu đề' };
+            }
+            results.push(r5);
+
+            // 6) Từ khóa trong mô tả meta: chỉ cần từ khóa chính (0.5)
+            const ml = toLower(meta);
+            const hasMainMeta = kMain && ml.includes(kMain);
+            const hasSubMeta = kSub && ml.includes(kSub);
+            let r6 = { key:6, status:'red', pts:0, msg:'Meta thiếu từ khóa chính' };
+            if (hasMainMeta) {
+              r6 = { key:6, status:'green', pts:0.5, msg:'Meta có từ khóa chính' };
+            } else if (hasSubMeta) {
+              r6 = { key:6, status:'orange', pts:0.25, msg:'Nên thêm từ khóa chính vào meta' };
+            }
+            results.push(r6);
+
+            // 7) H1 chứa từ khóa chính (1.0)
+            const h1s = Array.from(wrapper.querySelectorAll('h1'));
+            let r7 = { key:7, status:'red', pts:0, msg:'Không có H1 chứa từ khóa chính' };
+            if (h1s.length) {
+              const hasMainH1 = h1s.some(h => toLower(h.textContent).includes(kMain));
+              if (hasMainH1) r7 = { key:7, status:'green', pts:1.0, msg:'Ít nhất một H1 chứa từ khóa chính' };
+              else r7 = { key:7, status:'orange', pts:0.5, msg:'Nên thêm từ khóa chính vào H1' };
+            }
+            results.push(r7);
+
+            // 8) H2 đầu tiên chứa từ khóa (0.5)
+            const firstH2 = wrapper.querySelector('h2');
+            let r8 = { key:8, status:'orange', pts:0.25, msg:'Nên đưa từ khóa chính vào H2 đầu tiên' };
+            if (firstH2 && toLower(firstH2.textContent).includes(kMain)) {
+              r8 = { key:8, status:'green', pts:0.5, msg:'H2 đầu tiên chứa từ khóa chính' };
+            }
+            results.push(r8);
+
+            // 9) Từ khóa ở đoạn đầu & cuối (0.5)
+            const arrWords = (text || '').replace(/\n/g,' ').split(/\s+/).filter(Boolean);
+            const firstPart = arrWords.slice(0, 100).join(' ').toLowerCase();
+            const lastPart = arrWords.slice(Math.max(arrWords.length - 100, 0)).join(' ').toLowerCase();
+            const appearStart = kMain && firstPart.includes(kMain);
+            const appearEnd = kMain && lastPart.includes(kMain);
+            let r9 = { key:9, status:'red', pts:0, msg:'Không xuất hiện ở cả đoạn đầu lẫn đoạn cuối' };
+            if (appearStart && appearEnd) {
+              r9 = { key:9, status:'green', pts:0.5, msg:'Từ khóa chính xuất hiện ở đầu và cuối bài' };
+            } else if (appearStart || appearEnd) {
+              r9 = { key:9, status:'orange', pts:0.25, msg:'Nên xuất hiện ở cả đoạn đầu và đoạn cuối' };
+            }
+            results.push(r9);
+
+            // 10) Hình ảnh & ALT chứa từ khóa (0.5)
+            const imgs = Array.from(wrapper.querySelectorAll('img'));
+            let r10 = { key:10, status:'red', pts:0, msg:'Không có hình ảnh nào' };
+            if (imgs.length) {
+              const hasAlt = imgs.some(img => toLower(img.getAttribute('alt') || '').includes(kMain));
+              if (hasAlt) r10 = { key:10, status:'green', pts:0.5, msg:'Có ảnh với ALT chứa từ khóa chính' };
+              else r10 = { key:10, status:'orange', pts:0.25, msg:'Nên bổ sung từ khóa chính trong ALT ảnh' };
+            }
+            results.push(r10);
+
+            // 11) Liên kết ngoài (external) (0.5)
+            const anchors = Array.from(wrapper.querySelectorAll('a'));
+            const baseDomain = (() => {
+              try { return new URL(url).hostname; } catch {
+                try { return new URL('http://' + url).hostname; } catch { return ''; }
+              }
+            })();
+            const hasValidUrl = !!baseDomain;
+            const isExternal = (href) => {
+              if (!href) return false;
+              if (!/^https?:/i.test(href)) return false;
+              try { const d = new URL(href).hostname; return baseDomain ? (d && d !== baseDomain) : true; } catch { return false; }
+            };
+            const hasExternal = anchors.some(a => isExternal(a.getAttribute('href')));
+            let r11 = { key:11, status:'orange', pts:0.25, msg:'Nên có liên kết ngoài domain' };
+            if (hasExternal) r11 = { key:11, status:'green', pts:0.5, msg:'Có ≥1 liên kết ngoài domain' };
+            results.push(r11);
+
+            // 12) Liên kết nội bộ (internal) (0.5)
+            const isInternal = (href) => {
+              if (!href) return false;
+              if (/^https?:/i.test(href)) {
+                try { const d = new URL(href).hostname; return baseDomain ? (d === baseDomain) : false; } catch { return false; }
+              }
+              return true; // relative link treated as internal
+            };
+            const hasInternal = anchors.some(a => isInternal(a.getAttribute('href')));
+            let r12 = { key:12, status:'orange', pts:0.25, msg: hasValidUrl ? 'Nên có liên kết nội bộ' : 'Nên nhập link bài viết để kiểm tra SEO tốt hơn' };
+            if (hasValidUrl && hasInternal) r12 = { key:12, status:'green', pts:0.5, msg:'Có ≥1 liên kết nội bộ' };
+            results.push(r12);
+
+            // 13) Mật độ từ khóa (%) (3.0) – chuẩn mới: 2.0–5.0% là Đạt
+            // Sửa logic đếm để hỗ trợ Unicode (tiếng Việt) và khoảng trắng,
+            // không dùng \b vì không tương thích tốt với ký tự có dấu.
+            const cleanRaw = toLower(stripTags(raw)).replace(/[^\p{L}\p{N}\s]+/gu, ' ');
+            const clean = cleanRaw.replace(/\s+/g, ' ').trim();
+            const kwNorm = (kMain || '').replace(/[^\p{L}\p{N}\s]+/gu, ' ').replace(/\s+/g, ' ').trim();
+            const totalWords = wordCount(clean);
+            const kwWords = wordCount(kwNorm);
+            let occ = 0;
+            if (kwWords > 0) {
+              const kwPattern = kwNorm.split(' ').map(w => escapeRegExp(w)).join('\\s+');
+              const rx = new RegExp(`(^|\\s)${kwPattern}(?=\\s|$)`, 'gu');
+              occ = (clean.match(rx) || []).length;
+            }
+            const density = totalWords > 0 ? (occ * kwWords / totalWords) * 100 : 0;
+            let r13 = { key:13, status:'red', pts:0, msg:`Mật độ từ khóa thấp (${density.toFixed(2)}%)` };
+            if (density >= 2.0 && density <= 6.0) {
+              r13 = { key:13, status:'green', pts:3.0, msg:`Mật độ từ khóa đạt yêu cầu (${density.toFixed(2)}%)` };
+            } else if (density > 6.0) {
+              r13 = { key:13, status:'orange', pts:1.5, msg:`Nên giảm mật độ từ khóa (${density.toFixed(2)}%)` };
+            }
+            results.push(r13);
+
+            // Aggregate
+            const lists = {
+              green: results.filter(r => r.status === 'green'),
+              orange: results.filter(r => r.status === 'orange'),
+              red: results.filter(r => r.status === 'red'),
+            };
+            // Special case: nếu đồng thời có 4 lỗi
+            const fourErrors = (
+              ((title || '').trim().length === 0) &&
+              results.some(r => r.key === 7 && r.status === 'red') &&
+              results.some(r => r.key === 4 && r.status === 'red') &&
+              results.some(r => r.key === 5 && r.status === 'red')
+            );
+            const score = fourErrors
+              ? 1.0
+              : Math.min(10, Math.max(0, results.reduce((s, r) => s + r.pts, 0)));
+            const { hint, icon, tone } = this.getScoreDisplay(score);
+            setTimeout(() => {
+              this.score = score;
+              this.lists = lists;
+              this.scoreHint = hint;
+              this.scoreIcon = icon;
+              this.scoreTone = tone || 'green';
+              this.isScoring = false;
+              
+              // Bắn pháo giấy khi đạt điểm 10
+              if (score === 10) {
+                this.createConfetti();
+              }
+            }, 500);
+          },
+          rangeResult(key, value, okRange, warnRanges, maxPts, okMsg, warnMsg, badMsg) {
+            let status = 'red', pts = 0, msg = badMsg;
+            const [minOk, maxOk] = okRange;
+            if (value >= minOk && value <= maxOk) { status = 'green'; pts = maxPts; msg = okMsg; }
+            else {
+              for (const [wMin, wMax] of warnRanges) {
+                const inWarn = value >= wMin && value <= wMax;
+                if (inWarn) { status = 'orange'; pts = maxPts / 2; msg = warnMsg; break; }
+              }
+            }
+            return { key, status, pts, msg };
+          },
+          formatScore(n) {
+            try {
+              const num = Number(n || 0);
+              if (!isFinite(num)) return '0';
+              const rounded = Math.round(num * 10) / 10; // one decimal precision
+              if (Number.isInteger(rounded)) return String(Math.trunc(rounded));
+              return rounded.toFixed(1).replace('.', ',');
+            } catch { return '0'; }
+          },
+          createConfetti() {
+            // Sử dụng thư viện canvas-confetti chuyên nghiệp
+            confetti({
+              particleCount: 120,    // Giảm số lượng hạt từ 200 xuống 120
+              spread: 120,           // Tăng độ phân tán từ 90 lên 120 độ
+              origin: { y: 1.0 },    // Vị trí bắt đầu từ bottom (1.0 = 100% từ trên xuống)
+              colors: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff'],
+              startVelocity: 40,     // Tăng tốc độ ban đầu để bắn xa hơn
+              gravity: 0.7,          // Giảm trọng lực để bay xa hơn
+              drift: 0,              // Độ trôi ngang
+              ticks: 140,            // Tăng thời gian sống để hiệu ứng lớn hơn
+              scalar: 1.2            // Tăng kích thước tổng thể của từng hạt
+            });
+          },
+          isMainKeywordGood() {
+            const kMain = (this.mainKeyword || '').trim();
+            const mainWords = this.countWords(kMain);
+            const mainChars = kMain.length;
+            return mainWords >= 3 && mainWords <= 5 && mainChars < 20;
+          },
+          isSecondaryKeywordGood() {
+            const kSub = (this.secondaryKeyword || '').trim();
+            const subWords = this.countWords(kSub);
+            const subChars = kSub.length;
+            return subWords >= 3 && subWords <= 5 && subChars < 20;
+          },
+          isTitleGood() {
+            const titleLen = (this.title || '').trim().length;
+            return titleLen >= 30 && titleLen <= 60;
+          },
+          isMetaGood() {
+            const metaWords = this.countWords(this.meta || '');
+            return metaWords >= 30 && metaWords <= 50;
+          },
+          isContentGood() {
+            const contentWords = this.contentWordCount();
+            return contentWords >= 300; // Giả sử nội dung tốt cần ít nhất 300 từ
+          },
+          getScoreDisplay(score) {
+            const base = '/Icon SEO point/';
+            if (score === 10) {
+              return { hint: 'Thưa ngài Master of SEO, ngài thật vô song!', icon: base + '10.png', tone: 'green' };
+            }
+            if ((score >= 8.5 && score <= 9.5) || (score > 9.5 && score < 10)) {
+              return { hint: 'Thật tuyệt! Bạn là cây bút xuất sắc đó', icon: base + '9,0.png', tone: 'green' };
+            }
+            if (score >= 5.0 && score <= 8.25) {
+              return { hint: 'Ayoo, dành thời gian cải thiện thêm chút nữa nha', icon: base + '7,5.png', tone: 'orange' };
+            }
+            if (score >= 2.25 && score <= 4.75) {
+              return { hint: 'Úi, đừng publish bài viết này, hãy chỉnh sửa thêm', icon: base + '4,5.png', tone: 'red' };
+            }
+            return { hint: 'Ơ bạn ơi, viết lách như này có lỗi với tổ nghề đấy', icon: base + '2,0.png', tone: 'red' };
+          }
+        }
+      });
+      app.mount('#app');
+    </script>
+  </body>
+</html>
