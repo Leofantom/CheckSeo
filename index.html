@@ -729,12 +729,12 @@
         data() {
           return {
             lang: 'vi',
-            mainKeyword: '',
-            secondaryKeyword: '',
+            mainKeyword: 'Hợp đồng điện tử',
+            secondaryKeyword: 'Hợp đồng điện tử',
             title: '',
             meta: '',
             url: 'http://',
-            content: '',
+            content: 'Hợp đồng điện tử',
             score: 0,
             scoreHint: '',
             scoreIcon: '',
@@ -855,13 +855,14 @@
           },
           loadCached() {
             try {
-              this.mainKeyword = localStorage.getItem('sc_mainKeyword') || '';
-              this.secondaryKeyword = localStorage.getItem('sc_secondaryKeyword') || '';
+              const defKW = 'Hợp đồng điện tử';
+              this.mainKeyword = localStorage.getItem('sc_mainKeyword') || defKW;
+              this.secondaryKeyword = localStorage.getItem('sc_secondaryKeyword') || defKW;
               this.title = localStorage.getItem('sc_title') || '';
               this.meta = localStorage.getItem('sc_meta') || '';
               this.url = localStorage.getItem('sc_url') || '';
               if (!this.url) this.url = 'http://';
-              this.content = localStorage.getItem('sc_content') || '';
+              this.content = localStorage.getItem('sc_content') || 'Hợp đồng điện tử';
             } catch {}
           },
           selectAllShortcut(e) {
