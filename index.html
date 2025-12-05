@@ -222,91 +222,95 @@
       .updates-close { position: absolute; top: 12px; right: 14px; font-size: 22px; color: #8a93a5; cursor: pointer; }
       .updates-img { display: block; width: 100%; height: auto; }
   
-  </style>
+      </style>
   </head>
   <body>
+    <div id="app">
     <header class="topbar">
       <div class="brand"><img src="Icon SEO point/logo-ea.png" alt="Express Agency" /></div>
       <div class="header-actions">
         <a id="guideLink" href="#guide" class="header-btn">
           <img src="Icon SEO point/vuesax/linear/document-text.png" alt="Guide" />
-          <span>Hướng dẫn</span>
+          <span id="guideText"></span>
         </a>
         <a id="nextLink" href="#next" class="header-btn">
           <img src="Icon SEO point/Icon.png" alt="What's next" />
-          <span>What's next?</span>
+          <span id="nextText"></span>
         </a>
+        <button id="langToggle" class="header-btn" style="background:none;border:none;padding:0;cursor:pointer">
+          <span id="langText"></span>
+        </button>
       </div>
     </header>
-    <div id="app" class="container">
+    <div class="container">
 
       <div class="row">
         <!-- Left: Form -->
         <div class="col-2 card">
-          <div class="section-title">Thuộc tính</div>
+          <div class="section-title">{{ tr('section.attributes') }}</div>
           <div class="grid-2">
             <div class="field-container">
-              <label>Từ khóa chính</label>
-              <input type="text" @keydown="selectAllShortcut" v-model.trim="mainKeyword" placeholder="VD: Laptop giá rẻ" />
+              <label>{{ tr('label.mainKeyword') }}</label>
+              <input type="text" @keydown="selectAllShortcut" v-model.trim="mainKeyword" :placeholder="tr('placeholder.mainKeyword')" />
               <div class="flex-between field-info" :class="{ 'seo-good': isMainKeywordGood() }">
-                <div class="tiny">3–5 từ · dưới 20 ký tự</div>
-                <div class="tiny">Số từ: {{ countWords(mainKeyword) }}</div>
+                <div class="tiny">{{ tr('hint.keywordStandard') }}</div>
+                <div class="tiny">{{ tr('hint.wordCount') }} {{ countWords(mainKeyword) }}</div>
               </div>
             </div>
             <div class="field-container">
-              <label>Từ khóa phụ</label>
-              <input type="text" @keydown="selectAllShortcut" v-model.trim="secondaryKeyword" placeholder="VD: Laptop sinh viên" />
+              <label>{{ tr('label.secondaryKeyword') }}</label>
+              <input type="text" @keydown="selectAllShortcut" v-model.trim="secondaryKeyword" :placeholder="tr('placeholder.secondaryKeyword')" />
               <div class="flex-between field-info" :class="{ 'seo-good': isSecondaryKeywordGood() }">
-                <div class="tiny">3–5 từ · dưới 20 ký tự</div>
-                <div class="tiny">Số từ: {{ countWords(secondaryKeyword) }}</div>
+                <div class="tiny">{{ tr('hint.keywordStandard') }}</div>
+                <div class="tiny">{{ tr('hint.wordCount') }} {{ countWords(secondaryKeyword) }}</div>
               </div>
             </div>
           </div>
 
           <div style="margin-top:14px"></div>
           <div class="field-container">
-            <label>Tiêu đề bài viết</label>
-            <textarea rows="2" class="title-box" @keydown="selectAllShortcut" v-model.trim="title" placeholder="Nhập tiêu đề bài viết"></textarea>
+            <label>{{ tr('label.title') }}</label>
+            <textarea rows="2" class="title-box" @keydown="selectAllShortcut" v-model.trim="title" :placeholder="tr('placeholder.title')"></textarea>
             <div class="flex-between field-info" :class="{ 'seo-good': isTitleGood() }">
-              <div class="tiny">30 – 60 ký tự là tối ưu</div>
-              <div class="tiny">Số ký tự: {{ countChars(title) }}</div>
+              <div class="tiny">{{ tr('hint.titleLength') }}</div>
+              <div class="tiny">{{ tr('hint.charCount') }} {{ countChars(title) }}</div>
             </div>
           </div>
 
           <div style="margin-top:14px"></div>
           <div class="field-container">
-            <label>Mô tả (Meta Description)</label>
-            <textarea rows="3" @input="autoResize($event)" @keydown="selectAllShortcut" v-model.trim="meta" placeholder="Nhập mô tả ngắn"></textarea>
+            <label>{{ tr('label.meta') }}</label>
+            <textarea rows="3" @input="autoResize($event)" @keydown="selectAllShortcut" v-model.trim="meta" :placeholder="tr('placeholder.meta')"></textarea>
             <div class="flex-between field-info" :class="{ 'seo-good': isMetaGood() }">
-              <div class="tiny">30 – 50 từ là đạt yêu cầu</div>
-              <div class="tiny">Số từ: {{ countWords(meta) }}</div>
+              <div class="tiny">{{ tr('hint.metaWords') }}</div>
+              <div class="tiny">{{ tr('hint.wordCount') }} {{ countWords(meta) }}</div>
             </div>
           </div>
 
           <div style="margin-top:14px"></div>
           <div>
-            <label>URL bài viết</label>
+            <label>{{ tr('label.url') }}</label>
             <input type="url" @keydown="selectAllShortcut" @paste="normalizeUrlPaste" @focus="ensureUrlPrefix" v-model.trim="url" placeholder="http://" />
           </div>
 
           <div class="flex-between content-section-header" style="margin-top:16px; align-items:center">
-            <div class="section-title" style="margin:0">Nội dung</div>
-            <div class="tiny field-info" :class="{ 'seo-good': isContentGood() }">Số từ: {{ contentWordCount() }}</div>
+            <div class="section-title" style="margin:0">{{ tr('section.content') }}</div>
+            <div class="tiny field-info" :class="{ 'seo-good': isContentGood() }">{{ tr('hint.wordCount') }} {{ contentWordCount() }}</div>
           </div>
           <div class="field-container">
-            <textarea id="editor" class="content-editor" placeholder="Dán nội dung bài viết hoặc viết tại đây"></textarea>
+            <textarea id="editor" class="content-editor" :placeholder="tr('placeholder.content')"></textarea>
           </div>
         </div>
 
         <!-- Right: Score -->
         <div class="col card sticky-column">
           <div class="flex-between" style="margin-bottom:12px">
-            <button class="btn btn-full" @click="checkSEO">Kiểm tra SEO (Ctrl + Enter)</button>
+            <button class="btn btn-full" @click="checkSEO">{{ tr('action.checkSEO') }}</button>
           </div>
 
           <div class="score-box" :class="{ center: noData }">
             <div class="score-left">
-              <div class="tiny">Điểm SEO</div>
+              <div class="tiny">{{ tr('score.title') }}</div>
               <div class="score-number" :class="[{ loading: isScoring }, toneClass]">{{ noData ? 'N/A' : (isScoring ? '...' : formatScore(score)) }}</div>
             </div>
             <div class="score-right" v-if="!noData">
@@ -316,14 +320,14 @@
           </div>
 
             <div class="card no-border padded-lg" style="margin-top:14px">
-            <div class="legend-title">Đánh giá chi tiết</div>
+            <div class="legend-title">{{ tr('legend.title') }}</div>
             <div v-if="noData" class="empty-state">
               <div class="empty-icon">⚠️</div>
-              <div class="empty-text">Không có dữ liệu<br/>Vui lòng điền đủ nội dung</div>
+              <div class="empty-text">{{ tr('empty.noData') }}<br/>{{ tr('empty.fillContent') }}</div>
             </div>
             <template v-else>
               <div>
-                <div class="criteria-title">Rất tốt</div>
+                <div class="criteria-title">{{ tr('criteria.good') }}</div>
                 <ul class="legend-list">
                   <li class="legend-item" v-for="item in lists.green" :key="item.key">
                     <span class="dot green"></span>
@@ -332,7 +336,7 @@
                 </ul>
               </div>
               <div class="stack-section" v-if="lists.orange.length">
-                <div class="criteria-title">Cần cải thiện</div>
+                <div class="criteria-title">{{ tr('criteria.improve') }}</div>
                 <ul class="legend-list">
                   <li class="legend-item" v-for="item in lists.orange" :key="item.key">
                     <span class="dot orange"></span>
@@ -341,7 +345,7 @@
                 </ul>
               </div>
               <div class="stack-section" v-if="lists.red.length">
-                <div class="criteria-title">Không đạt</div>
+                <div class="criteria-title">{{ tr('criteria.fail') }}</div>
                 <ul class="legend-list">
                   <li class="legend-item" v-for="item in lists.red" :key="item.key">
                     <span class="dot red"></span>
@@ -354,21 +358,21 @@
         </div>
       </div>
 
-      <div class="footer">CheckSeoVn v1.1.8 · Thanks for your support coffee :x</div>
+      <div class="footer">{{ tr('footer.text') }}</div>
     </div>
 
     <!-- Floating Buy me a coffee button -->
-    <a id="coffeeFab" href="#" class="coffee-fab" aria-label="Buy me a coffee">
+    <a id="coffeeFab" href="#" class="coffee-fab" :aria-label="tr('coffee.fab')">
       <span class="emoji">☕️</span>
       <span class="divider"></span>
-      <span>Buy me a coffee</span>
+      <span>{{ tr('coffee.fab') }}</span>
     </a>
 
     <!-- Guide Modal -->
     <div id="guideModal" class="guide-modal hidden" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
       <div class="guide-dialog">
-        <div id="guideClose" class="guide-close" aria-label="Đóng">×</div>
-        <div id="guideTitle" class="guide-title">HƯỚNG DẪN ĐẠT ĐIỂM SEO TỐI ĐA</div>
+        <div id="guideClose" class="guide-close" :aria-label="tr('aria.close')">×</div>
+        <div id="guideTitle" class="guide-title">{{ tr('guide.title') }}</div>
         <table class="guide-table" aria-label="Hướng dẫn SEO">
           <colgroup>
             <col class="criteria-col" />
@@ -376,62 +380,62 @@
           </colgroup>
           <thead>
             <tr>
-              <th>Tiêu chí</th>
-              <th>Nội dung</th>
+              <th>{{ tr('guide.table.criteria') }}</th>
+              <th>{{ tr('guide.table.content') }}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Từ khóa chính</td>
-              <td>3–5 từ, dưới 20 ký tự.</td>
+              <td>{{ tr('guide.r1.criteria') }}</td>
+              <td>{{ tr('guide.r1.content') }}</td>
             </tr>
             <tr>
-              <td>Từ khóa phụ</td>
-              <td>3–5 từ, dưới 20 ký tự (nên có).</td>
+              <td>{{ tr('guide.r2.criteria') }}</td>
+              <td>{{ tr('guide.r2.content') }}</td>
             </tr>
             <tr>
-              <td>Mật độ từ khóa</td>
-              <td>Từ 2,5% đến 6,0% tổng số từ trong nội dung bài viết. Công thức: Mật độ = (Số từ trong từ khóa × Số lần xuất hiện) / Tổng số từ × 100%. Ví dụ: Bài 1000 từ, từ khóa “điện thoại di động” (4 từ) xuất hiện 7 lần → (4×7)/1000×100 = 2,8%.</td>
+              <td>{{ tr('guide.r3.criteria') }}</td>
+              <td>{{ tr('guide.r3.content') }}</td>
             </tr>
             <tr>
-              <td>Tiêu đề</td>
-              <td>30–60 ký tự, từ khóa chính ở đầu tiêu đề.</td>
+              <td>{{ tr('guide.r4.criteria') }}</td>
+              <td>{{ tr('guide.r4.content') }}</td>
             </tr>
             <tr>
-              <td>Mô tả meta</td>
-              <td>30–50 từ, chứa từ khóa chính (có thể thêm từ khóa phụ).</td>
+              <td>{{ tr('guide.r5.criteria') }}</td>
+              <td>{{ tr('guide.r5.content') }}</td>
             </tr>
             <tr>
-              <td>Nội dung</td>
-              <td>300–1800 từ, chia đoạn ngắn, dễ đọc.</td>
+              <td>{{ tr('guide.r6.criteria') }}</td>
+              <td>{{ tr('guide.r6.content') }}</td>
             </tr>
             <tr>
-              <td>H1</td>
-              <td>Có chứa từ khóa chính.</td>
+              <td>{{ tr('guide.r7.criteria') }}</td>
+              <td>{{ tr('guide.r7.content') }}</td>
             </tr>
             <tr>
-              <td>H2 đầu tiên</td>
-              <td>Nên có từ khóa chính.</td>
+              <td>{{ tr('guide.r8.criteria') }}</td>
+              <td>{{ tr('guide.r8.content') }}</td>
             </tr>
             <tr>
-              <td>Đoạn đầu &amp; cuối bài</td>
-              <td>Phải xuất hiện từ khóa chính trong 100 từ đầu và 100 từ cuối bài viết.</td>
+              <td>{{ tr('guide.r9.criteria') }}</td>
+              <td>{{ tr('guide.r9.content') }}</td>
             </tr>
             <tr>
-              <td>Hình ảnh</td>
-              <td>Có ít nhất 1 ảnh, thẻ ALT chứa từ khóa chính.</td>
+              <td>{{ tr('guide.r10.criteria') }}</td>
+              <td>{{ tr('guide.r10.content') }}</td>
             </tr>
             <tr>
-              <td>Liên kết nội bộ</td>
-              <td>Có link tới bài khác trong cùng website.</td>
+              <td>{{ tr('guide.r11.criteria') }}</td>
+              <td>{{ tr('guide.r11.content') }}</td>
             </tr>
             <tr>
-              <td>Liên kết ngoài</td>
-              <td>Có link tới nguồn đáng tin cậy khác domain.</td>
+              <td>{{ tr('guide.r12.criteria') }}</td>
+              <td>{{ tr('guide.r12.content') }}</td>
             </tr>
             <tr>
-              <td>Bố cục</td>
-              <td>Rõ ràng, dễ nhìn, có tiêu đề phụ và bullet points.</td>
+              <td>{{ tr('guide.r13.criteria') }}</td>
+              <td>{{ tr('guide.r13.content') }}</td>
             </tr>
           </tbody>
         </table>
@@ -441,7 +445,7 @@
     <!-- Updates Modal (What's next?) -->
     <div id="updatesModal" class="updates-modal hidden" role="dialog" aria-modal="true">
       <div class="updates-dialog">
-        <div id="updatesClose" class="updates-close" aria-label="Đóng">×</div>
+        <div id="updatesClose" class="updates-close" :aria-label="tr('aria.close')">×</div>
         <img src="Icon SEO point/WhatNext.jpg" alt="What's next" class="updates-img" />
       </div>
     </div>
@@ -449,26 +453,258 @@
     <!-- Coffee Modal -->
     <div id="coffeeModal" class="coffee-modal hidden" role="dialog" aria-modal="true" aria-labelledby="coffeeTitle">
       <div class="coffee-dialog">
-        <div id="coffeeClose" class="coffee-close" aria-label="Đóng">×</div>
-        <div id="coffeeTitle" class="coffee-title">IN PROGRESS</div>
+        <div id="coffeeClose" class="coffee-close" :aria-label="tr('aria.close')">×</div>
+        <div id="coffeeTitle" class="coffee-title">{{ tr('coffee.title') }}</div>
         <img src="Icon SEO point/Group 5.png" alt="Coffee illustration" class="coffee-hero" />
         <div class="coffee-body">
-          <div class="coffee-hey">HEYYOOOO!</div>
-          <div class="coffee-sub">Xin chào, tớ là Như Quỳnh - một cô gái làm truyền thông và yêu thích lập trình. Cảm ơn bạn đã quan tâm đến sản phẩm này ❤️ Tớ sẽ cố gắng update tiếp các tính năng “so cool” trong tương lai!</div>
-          <div class="coffee-sub coffee-support"><small>If you like & support, feel free</small></div>
+          <div class="coffee-hey">{{ tr('coffee.hey') }}</div>
+          <div class="coffee-sub">{{ tr('coffee.sub') }}</div>
+          <div class="coffee-sub coffee-support"><small>{{ tr('coffee.support') }}</small></div>
         </div>
         <div class="coffee-actions">
-          <a class="btn" href="https://buymeacoffee.com/nhuquynh" target="_blank" rel="noopener"><span>☕</span><span>BUY ME A COFFEE</span></a>
+          <a class="btn" href="https://buymeacoffee.com/nhuquynh" target="_blank" rel="noopener"><span>☕</span><span>{{ tr('coffee.cta') }}</span></a>
         </div>
-        <div class="coffee-sub coffee-note"><small>and you will be listed in PREMIUM to try new features soon.</small></div>
+        <div class="coffee-sub coffee-note"><small>{{ tr('coffee.note') }}</small></div>
       </div>
     </div>
 
+    </div>
     <!-- TinyMCE (community) via jsDelivr -->
     <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js"></script>
     <!-- VueJS via CDN -->
     <script src="https://unpkg.com/vue@3.4.27/dist/vue.global.prod.js"></script>
     <script>
+      (function(){
+        var style = document.createElement('style');
+        style.textContent = '[v-cloak]{display:none}';
+        document.head.appendChild(style);
+      })();
+      const I18N = {
+        vi: {
+          'menu.guide': 'Hướng dẫn',
+          'menu.next': "What's next?",
+          'section.attributes': 'Thuộc tính',
+          'label.mainKeyword': 'Từ khóa chính',
+          'placeholder.mainKeyword': 'VD: Laptop giá rẻ',
+          'label.secondaryKeyword': 'Từ khóa phụ',
+          'placeholder.secondaryKeyword': 'VD: Laptop sinh viên',
+          'hint.keywordStandard': '3–5 từ · dưới 20 ký tự',
+          'hint.wordCount': 'Số từ:',
+          'hint.charCount': 'Số ký tự:',
+          'label.title': 'Tiêu đề bài viết',
+          'placeholder.title': 'Nhập tiêu đề bài viết',
+          'hint.titleLength': '30–60 ký tự là tối ưu',
+          'label.meta': 'Mô tả (Meta Description)',
+          'placeholder.meta': 'Nhập mô tả ngắn',
+          'hint.metaWords': '30–50 từ là đạt yêu cầu',
+          'label.url': 'URL bài viết',
+          'section.content': 'Nội dung',
+          'placeholder.content': 'Dán nội dung bài viết hoặc viết tại đây',
+          'action.checkSEO': 'Kiểm tra SEO (Ctrl + Enter)',
+          'score.title': 'Điểm SEO',
+          'legend.title': 'Đánh giá chi tiết',
+          'empty.noData': 'Không có dữ liệu',
+          'empty.fillContent': 'Vui lòng điền đủ nội dung',
+          'criteria.good': 'Rất tốt',
+          'criteria.improve': 'Cần cải thiện',
+          'criteria.fail': 'Không đạt',
+          'footer.text': 'CheckSeoVn v1.1.8 · Cảm ơn bạn đã ủng hộ cà phê :x',
+          'aria.close': 'Đóng',
+          'guide.title': 'HƯỚNG DẪN ĐẠT ĐIỂM SEO TỐI ĐA',
+          'guide.table.criteria': 'Tiêu chí',
+          'guide.table.content': 'Nội dung',
+          'guide.r1.criteria': 'Từ khóa chính',
+          'guide.r1.content': '3–5 từ, dưới 20 ký tự.',
+          'guide.r2.criteria': 'Từ khóa phụ',
+          'guide.r2.content': '3–5 từ, dưới 20 ký tự (nên có).',
+          'guide.r3.criteria': 'Mật độ từ khóa',
+          'guide.r3.content': '2,0%–6,0% tổng số từ. Công thức: (Số từ trong từ khóa × Số lần xuất hiện) / Tổng số từ × 100%.',
+          'guide.r4.criteria': 'Tiêu đề',
+          'guide.r4.content': '30–60 ký tự, từ khóa chính ở đầu.',
+          'guide.r5.criteria': 'Mô tả meta',
+          'guide.r5.content': '30–50 từ, chứa từ khóa chính.',
+          'guide.r6.criteria': 'Nội dung',
+          'guide.r6.content': '300–1800 từ, đoạn ngắn, dễ đọc.',
+          'guide.r7.criteria': 'H1',
+          'guide.r7.content': 'Có chứa từ khóa chính.',
+          'guide.r8.criteria': 'H2 đầu tiên',
+          'guide.r8.content': 'Nên chứa từ khóa chính.',
+          'guide.r9.criteria': 'Đầu & cuối bài',
+          'guide.r9.content': 'Từ khóa chính xuất hiện trong 100 từ đầu và cuối.',
+          'guide.r10.criteria': 'Hình ảnh',
+          'guide.r10.content': 'Ít nhất 1 ảnh, ALT chứa từ khóa chính.',
+          'guide.r11.criteria': 'Liên kết nội bộ',
+          'guide.r11.content': 'Link tới bài khác trong website.',
+          'guide.r12.criteria': 'Liên kết ngoài',
+          'guide.r12.content': 'Link tới nguồn đáng tin cậy khác domain.',
+          'guide.r13.criteria': 'Bố cục',
+          'guide.r13.content': 'Rõ ràng, dễ nhìn, có tiêu đề phụ và bullet points.',
+          'coffee.fab': 'Buy me a coffee',
+          'coffee.title': 'ĐANG PHÁT TRIỂN',
+          'coffee.hey': 'HEYYOOOO!',
+          'coffee.sub': 'Xin chào, tớ là Như Quỳnh - một cô gái làm truyền thông và yêu thích lập trình. Cảm ơn bạn đã quan tâm đến sản phẩm này ❤️ Tớ sẽ cố gắng cập nhật thêm các tính năng “so cool” trong tương lai!',
+          'coffee.support': 'Nếu thích & ủng hộ, cứ thoải mái nhé',
+          'coffee.cta': 'BUY ME A COFFEE',
+          'coffee.note': 'và bạn sẽ được thêm vào PREMIUM để thử các tính năng mới sớm.',
+          'confirm.exit': 'Dữ liệu sẽ bị mất, bạn có chắc muốn thoát?',
+          'score.hint.master': 'Thưa ngài Master of SEO, ngài thật vô song!',
+          'score.hint.great': 'Thật tuyệt! Bạn là cây bút xuất sắc đó',
+          'score.hint.ok': 'Ayoo, dành thời gian cải thiện thêm chút nữa nha',
+          'score.hint.bad': 'Úi, đừng publish bài viết này, hãy chỉnh sửa thêm',
+          'score.hint.worst': 'Ơ bạn ơi, viết lách như này có lỗi với tổ nghề đấy',
+          'result.r1_bad': 'Từ khóa chính/phụ chưa đạt chuẩn (3–5 từ, <20 ký tự)',
+          'result.r1_good': 'Từ khóa chính/phụ đạt chuẩn (3–5 từ, <20 ký tự)',
+          'result.r1_warn_nosub': 'Nên có từ khoá phụ',
+          'result.r1_warn_standardize': 'Nên chuẩn hóa từ khóa (3–5 từ, <20 ký tự)',
+          'result.r2_missing': 'Chưa có tiêu đề',
+          'result.r2_good': 'Độ dài tiêu đề tốt (30–60 ký tự)',
+          'result.r2_warn_short': 'tiêu đề quá ngắn',
+          'result.r2_warn_long': 'tiêu đề quá dài',
+          'result.r3_short': 'Mô tả quá ngắn (<30 từ)',
+          'result.r3_good': 'Độ dài mô tả đạt yêu cầu (30–50 từ)',
+          'result.r3_long': 'Mô tả quá dài (>50 từ)',
+          'result.r4_ok': 'Độ dài nội dung tốt (300–1800 từ)',
+          'result.r4_warn': 'Nên điều chỉnh độ dài nội dung',
+          'result.r4_bad': 'Nội dung quá ngắn',
+          'result.r5_bad': 'Tiêu đề không chứa từ khóa chính',
+          'result.r5_good': 'Từ khóa chính nằm ngay đầu tiêu đề',
+          'result.r5_warn': 'Nên đưa từ khóa chính lên đầu tiêu đề',
+          'result.r6_bad': 'Meta thiếu từ khóa chính',
+          'result.r6_good': 'Meta có từ khóa chính',
+          'result.r6_warn': 'Nên thêm từ khóa chính vào meta',
+          'result.r7_bad': 'Không có H1 chứa từ khóa chính',
+          'result.r7_good': 'Ít nhất một H1 chứa từ khóa chính',
+          'result.r7_warn': 'Nên thêm từ khóa chính vào H1',
+          'result.r8_warn': 'Nên đưa từ khóa chính vào H2 đầu tiên',
+          'result.r8_good': 'H2 đầu tiên chứa từ khóa chính',
+          'result.r9_bad': 'Không xuất hiện ở cả đoạn đầu lẫn đoạn cuối',
+          'result.r9_good': 'Từ khóa chính xuất hiện ở đầu và cuối bài',
+          'result.r9_warn': 'Nên xuất hiện ở cả đoạn đầu và đoạn cuối',
+          'result.r10_bad': 'Không có hình ảnh nào',
+          'result.r10_good': 'Có ảnh với ALT chứa từ khóa chính',
+          'result.r10_warn': 'Nên bổ sung từ khóa chính trong ALT ảnh',
+          'result.r11_warn': 'Nên có liên kết ngoài domain',
+          'result.r11_good': 'Có ≥1 liên kết ngoài domain',
+          'result.r12_warn_valid': 'Nên có liên kết nội bộ',
+          'result.r12_warn_nourl': 'Nên nhập link bài viết để kiểm tra SEO tốt hơn',
+          'result.r12_good': 'Có ≥1 liên kết nội bộ',
+          'result.r13_low': 'Mật độ từ khóa thấp (%s%)',
+          'result.r13_ok': 'Mật độ từ khóa đạt yêu cầu (%s%)',
+          'result.r13_high': 'Nên giảm mật độ từ khóa (%s%)'
+        },
+        en: {
+          'menu.guide': 'Guide',
+          'menu.next': "What's next?",
+          'section.attributes': 'Attributes',
+          'label.mainKeyword': 'Main keyword',
+          'placeholder.mainKeyword': 'e.g. Cheap laptop',
+          'label.secondaryKeyword': 'Secondary keyword',
+          'placeholder.secondaryKeyword': 'e.g. Student laptop',
+          'hint.keywordStandard': '3–5 words · under 20 chars',
+          'hint.wordCount': 'Words:',
+          'hint.charCount': 'Chars:',
+          'label.title': 'Article title',
+          'placeholder.title': 'Enter article title',
+          'hint.titleLength': '30–60 chars is optimal',
+          'label.meta': 'Meta description',
+          'placeholder.meta': 'Enter short description',
+          'hint.metaWords': '30–50 words is recommended',
+          'label.url': 'Article URL',
+          'section.content': 'Content',
+          'placeholder.content': 'Paste content or write here',
+          'action.checkSEO': 'Check SEO (Ctrl + Enter)',
+          'score.title': 'SEO score',
+          'legend.title': 'Detailed evaluation',
+          'empty.noData': 'No data',
+          'empty.fillContent': 'Please fill in all content',
+          'criteria.good': 'Great',
+          'criteria.improve': 'Needs improvement',
+          'criteria.fail': 'Failed',
+          'footer.text': 'CheckSeoVn v1.1.8 · Thanks for your coffee support :x',
+          'aria.close': 'Close',
+          'guide.title': 'GUIDE TO MAX SEO SCORE',
+          'guide.table.criteria': 'Criteria',
+          'guide.table.content': 'Content',
+          'guide.r1.criteria': 'Main keyword',
+          'guide.r1.content': '3–5 words, under 20 chars.',
+          'guide.r2.criteria': 'Secondary keyword',
+          'guide.r2.content': '3–5 words, under 20 chars (recommended).',
+          'guide.r3.criteria': 'Keyword density',
+          'guide.r3.content': '2.0%–6.0% of total words. Formula: (KW words × occurrences) / total words × 100%.',
+          'guide.r4.criteria': 'Title',
+          'guide.r4.content': '30–60 chars, main keyword at the start.',
+          'guide.r5.criteria': 'Meta description',
+          'guide.r5.content': '30–50 words, include main keyword.',
+          'guide.r6.criteria': 'Content',
+          'guide.r6.content': '300–1800 words, short paragraphs, readable.',
+          'guide.r7.criteria': 'H1',
+          'guide.r7.content': 'Contains the main keyword.',
+          'guide.r8.criteria': 'First H2',
+          'guide.r8.content': 'Should include the main keyword.',
+          'guide.r9.criteria': 'Beginning & end',
+          'guide.r9.content': 'Main keyword appears in first 100 and last 100 words.',
+          'guide.r10.criteria': 'Images',
+          'guide.r10.content': 'At least 1 image; ALT contains main keyword.',
+          'guide.r11.criteria': 'Internal links',
+          'guide.r11.content': 'Link to other pages on the site.',
+          'guide.r12.criteria': 'External links',
+          'guide.r12.content': 'Link to trusted sources on other domains.',
+          'guide.r13.criteria': 'Layout',
+          'guide.r13.content': 'Clear, scannable, with subheadings and bullet points.',
+          'coffee.fab': 'Buy me a coffee',
+          'coffee.title': 'IN PROGRESS',
+          'coffee.hey': 'HEYYOOOO!',
+          'coffee.sub': "Hello, I'm Nhu Quynh — a girl in communications who loves coding. Thank you for checking out this product ❤️ I'll keep updating cool features in the future!",
+          'coffee.support': 'If you like & support, feel free',
+          'coffee.cta': 'BUY ME A COFFEE',
+          'coffee.note': 'and you will be listed in PREMIUM to try new features soon.',
+          'confirm.exit': 'Unsaved data will be lost. Are you sure to leave?',
+          'score.hint.master': 'Master of SEO — unmatched!',
+          'score.hint.great': 'Awesome! You’re an excellent writer',
+          'score.hint.ok': 'Good work — refine a bit more',
+          'score.hint.bad': 'Oops — don’t publish yet, please edit',
+          'score.hint.worst': 'Hey, this writing breaks all rules — please fix',
+          'result.r1_bad': 'Main/secondary keyword not standard (3–5 words, <20 chars)',
+          'result.r1_good': 'Main/secondary keyword standard',
+          'result.r1_warn_nosub': 'Add a secondary keyword',
+          'result.r1_warn_standardize': 'Standardize keywords (3–5 words, <20 chars)',
+          'result.r2_missing': 'Missing title',
+          'result.r2_good': 'Good title length (30–60 chars)',
+          'result.r2_warn_short': 'Title too short',
+          'result.r2_warn_long': 'Title too long',
+          'result.r3_short': 'Meta too short (<30 words)',
+          'result.r3_good': 'Good meta length (30–50 words)',
+          'result.r3_long': 'Meta too long (>50 words)',
+          'result.r4_ok': 'Good content length (300–1800 words)',
+          'result.r4_warn': 'Adjust content length',
+          'result.r4_bad': 'Content too short',
+          'result.r5_bad': 'Title lacks main keyword',
+          'result.r5_good': 'Main keyword at start of title',
+          'result.r5_warn': 'Place main keyword at the start',
+          'result.r6_bad': 'Meta missing main keyword',
+          'result.r6_good': 'Meta contains main keyword',
+          'result.r6_warn': 'Add main keyword to meta',
+          'result.r7_bad': 'No H1 contains main keyword',
+          'result.r7_good': 'At least one H1 contains main keyword',
+          'result.r7_warn': 'Add main keyword to an H1',
+          'result.r8_warn': 'Add main keyword to the first H2',
+          'result.r8_good': 'First H2 contains main keyword',
+          'result.r9_bad': 'Missing in both beginning and end',
+          'result.r9_good': 'Main keyword appears in beginning and end',
+          'result.r9_warn': 'Ensure keyword appears at beginning and end',
+          'result.r10_bad': 'No images',
+          'result.r10_good': 'Image ALT contains main keyword',
+          'result.r10_warn': 'Add main keyword to an image ALT',
+          'result.r11_warn': 'Add an external link',
+          'result.r11_good': 'Has ≥1 external link',
+          'result.r12_warn_valid': 'Add an internal link',
+          'result.r12_warn_nourl': 'Enter article URL for better checks',
+          'result.r12_good': 'Has ≥1 internal link',
+          'result.r13_low': 'Keyword density low (%s%)',
+          'result.r13_ok': 'Keyword density OK (%s%)',
+          'result.r13_high': 'Reduce keyword density (%s%)'
+        }
+      };
       const { createApp } = Vue;
 
       function escapeRegExp(string) {
@@ -492,6 +728,7 @@
       const app = createApp({
         data() {
           return {
+            lang: 'vi',
             mainKeyword: '',
             secondaryKeyword: '',
             title: '',
@@ -518,7 +755,17 @@
         mounted() {
           // Load cached values then init editor
           this.loadCached();
+          try {
+            const cachedLang = localStorage.getItem('sc_lang');
+            if (cachedLang === 'en' || cachedLang === 'vi') this.lang = cachedLang || 'vi';
+            document.documentElement.lang = this.lang;
+          } catch {}
           this.initEditor();
+          this.refreshHeaderTexts();
+          try {
+            const langBtn = document.getElementById('langToggle');
+            if (langBtn) langBtn.addEventListener('click', () => { this.toggleLang(); this.refreshHeaderTexts(); });
+          } catch {}
           // Phím tắt toàn cục Ctrl/Cmd + Enter
           window.addEventListener('keydown', this.onShortcut);
           // Ctrl/Cmd + A: chọn toàn bộ nội dung trong input/textarea
@@ -581,8 +828,28 @@
           meta(val) { try { localStorage.setItem('sc_meta', val || ''); } catch {} },
           url(val) { try { localStorage.setItem('sc_url', val || ''); } catch {} },
           content(val) { try { localStorage.setItem('sc_content', val || ''); } catch {} },
+          lang(val) { try { localStorage.setItem('sc_lang', val || 'vi'); document.documentElement.lang = val || 'vi'; this.refreshHeaderTexts(); } catch {} },
         },
         methods: {
+          tr(key) {
+            try { return (I18N[this.lang] && I18N[this.lang][key]) || (I18N.vi && I18N.vi[key]) || key; } catch { return key; }
+          },
+          trp(key, ...args) {
+            let s = this.tr(key);
+            for (const a of args) { s = String(s).replace('%s', a); }
+            return s;
+          },
+          toggleLang() { this.lang = this.lang === 'vi' ? 'en' : 'vi'; },
+          refreshHeaderTexts() {
+            try {
+              const guide = document.getElementById('guideText');
+              const next = document.getElementById('nextText');
+              const langText = document.getElementById('langText');
+              if (guide) guide.textContent = this.tr('menu.guide');
+              if (next) next.textContent = this.tr('menu.next');
+              if (langText) langText.textContent = (this.lang === 'vi' ? 'English' : 'Tiếng Việt');
+            } catch {}
+          },
           autoResize(e) {
             const t = e.target; t.style.height = 'auto'; t.style.height = t.scrollHeight + 'px';
           },
@@ -705,8 +972,8 @@
           },
           onBeforeUnload(e) {
             e.preventDefault();
-            e.returnValue = 'Dữ liệu sẽ bị mất, bạn có chắc muốn thoát?';
-            return 'Dữ liệu sẽ bị mất, bạn có chắc muốn thoát?';
+            e.returnValue = this.tr('confirm.exit');
+            return this.tr('confirm.exit');
           },
           revokeObjectUrls() {
             (this.objectUrls || []).forEach(u => { try { URL.revokeObjectURL(u); } catch {} });
@@ -744,59 +1011,59 @@
             const subChars = (kSub || '').length;
             const mainStd = mainWords >= 3 && mainWords <= 5 && mainChars < 20;
             const subStd = subWords >= 3 && subWords <= 5 && subChars < 20;
-            let r1Status = 'red', r1Pts = 0, r1Msg = 'Từ khóa chính/phụ chưa đạt chuẩn (3–5 từ, <20 ký tự)';
+            let r1Status = 'red', r1Pts = 0, r1Msg = this.tr('result.r1_bad');
             if (mainStd && subStd) {
-              r1Status = 'green'; r1Pts = 0.5; r1Msg = 'Từ khóa chính/phụ đạt chuẩn (3–5 từ, <20 ký tự)';
+              r1Status = 'green'; r1Pts = 0.5; r1Msg = this.tr('result.r1_good');
             } else if (mainStd || subStd) {
               r1Status = 'orange'; r1Pts = 0.25;
               r1Msg = (!subStd && subWords === 0)
-                ? 'Nên có từ khoá phụ'
-                : 'Nên chuẩn hóa từ khóa (3–5 từ, <20 ký tự)';
+                ? this.tr('result.r1_warn_nosub')
+                : this.tr('result.r1_warn_standardize');
             }
             results.push({ key: 1, status: r1Status, pts: r1Pts, msg: r1Msg });
 
             // 2) Độ dài tiêu đề (0.5)
             const titleLen = (title || '').trim().length;
             {
-              let r2 = { key:2, status:'red', pts:0, msg:'Chưa có tiêu đề' };
+              let r2 = { key:2, status:'red', pts:0, msg:this.tr('result.r2_missing') };
               if (titleLen === 0) {
-                r2 = { key:2, status:'red', pts:0, msg:'Chưa có tiêu đề' };
+                r2 = { key:2, status:'red', pts:0, msg:this.tr('result.r2_missing') };
               } else if (titleLen >= 30 && titleLen <= 60) {
-                r2 = { key:2, status:'green', pts:0.5, msg:'Độ dài tiêu đề tốt (30–60 ký tự)' };
+                r2 = { key:2, status:'green', pts:0.5, msg:this.tr('result.r2_good') };
               } else if (titleLen >= 20 && titleLen <= 29) {
-                r2 = { key:2, status:'orange', pts:0.25, msg:'tiêu đề quá ngắn' };
+                r2 = { key:2, status:'orange', pts:0.25, msg:this.tr('result.r2_warn_short') };
               } else if (titleLen < 20) {
-                r2 = { key:2, status:'red', pts:0, msg:'tiêu đề quá ngắn' };
+                r2 = { key:2, status:'red', pts:0, msg:this.tr('result.r2_warn_short') };
               } else if (titleLen >= 61 && titleLen <= 70) {
-                r2 = { key:2, status:'orange', pts:0.25, msg:'tiêu đề quá dài' };
+                r2 = { key:2, status:'orange', pts:0.25, msg:this.tr('result.r2_warn_long') };
               } else {
-                r2 = { key:2, status:'red', pts:0, msg:'tiêu đề quá dài' };
+                r2 = { key:2, status:'red', pts:0, msg:this.tr('result.r2_warn_long') };
               }
               results.push(r2);
             }
 
             // 3) Độ dài mô tả meta theo số từ (0.5)
             const metaWords = wordCount((meta || '').trim());
-            let r3 = { key:3, status:'red', pts:0, msg:'Mô tả quá ngắn (<30 từ)' };
+            let r3 = { key:3, status:'red', pts:0, msg:this.tr('result.r3_short') };
             if (metaWords >= 30 && metaWords <= 50) {
-              r3 = { key:3, status:'green', pts:0.5, msg:'Độ dài mô tả đạt yêu cầu (30–50 từ)' };
+              r3 = { key:3, status:'green', pts:0.5, msg:this.tr('result.r3_good') };
             } else if (metaWords > 50) {
-              r3 = { key:3, status:'red', pts:0, msg:'Mô tả quá dài (>50 từ)' };
+              r3 = { key:3, status:'red', pts:0, msg:this.tr('result.r3_long') };
             }
             results.push(r3);
 
             // 4) Độ dài nội dung (số từ) (0.5)
             const words = wordCount(text);
             results.push(this.rangeResult(4, words, [300,1800], [[150,299],[1801,Infinity]], 0.5,
-              'Độ dài nội dung tốt (300–1800 từ)', 'Nên điều chỉnh độ dài nội dung', 'Nội dung quá ngắn'));
+              this.tr('result.r4_ok'), this.tr('result.r4_warn'), this.tr('result.r4_bad')));
 
             // 5) Từ khóa chính ở đầu tiêu đề (1.0)
             const tl = toLower(title.trim());
-            let r5 = { key:5, status:'red', pts:0, msg:'Tiêu đề không chứa từ khóa chính' };
+            let r5 = { key:5, status:'red', pts:0, msg:this.tr('result.r5_bad') };
             if (tl.startsWith(kMain) && kMain) {
-              r5 = { key:5, status:'green', pts:1.0, msg:'Từ khóa chính nằm ngay đầu tiêu đề' };
+              r5 = { key:5, status:'green', pts:1.0, msg:this.tr('result.r5_good') };
             } else if (kMain && tl.includes(kMain)) {
-              r5 = { key:5, status:'orange', pts:0.5, msg:'Nên đưa từ khóa chính lên đầu tiêu đề' };
+              r5 = { key:5, status:'orange', pts:0.5, msg:this.tr('result.r5_warn') };
             }
             results.push(r5);
 
@@ -804,29 +1071,29 @@
             const ml = toLower(meta);
             const hasMainMeta = kMain && ml.includes(kMain);
             const hasSubMeta = kSub && ml.includes(kSub);
-            let r6 = { key:6, status:'red', pts:0, msg:'Meta thiếu từ khóa chính' };
+            let r6 = { key:6, status:'red', pts:0, msg:this.tr('result.r6_bad') };
             if (hasMainMeta) {
-              r6 = { key:6, status:'green', pts:0.5, msg:'Meta có từ khóa chính' };
+              r6 = { key:6, status:'green', pts:0.5, msg:this.tr('result.r6_good') };
             } else if (hasSubMeta) {
-              r6 = { key:6, status:'orange', pts:0.25, msg:'Nên thêm từ khóa chính vào meta' };
+              r6 = { key:6, status:'orange', pts:0.25, msg:this.tr('result.r6_warn') };
             }
             results.push(r6);
 
             // 7) H1 chứa từ khóa chính (1.0)
             const h1s = Array.from(wrapper.querySelectorAll('h1'));
-            let r7 = { key:7, status:'red', pts:0, msg:'Không có H1 chứa từ khóa chính' };
+            let r7 = { key:7, status:'red', pts:0, msg:this.tr('result.r7_bad') };
             if (h1s.length) {
               const hasMainH1 = h1s.some(h => toLower(h.textContent).includes(kMain));
-              if (hasMainH1) r7 = { key:7, status:'green', pts:1.0, msg:'Ít nhất một H1 chứa từ khóa chính' };
-              else r7 = { key:7, status:'orange', pts:0.5, msg:'Nên thêm từ khóa chính vào H1' };
+              if (hasMainH1) r7 = { key:7, status:'green', pts:1.0, msg:this.tr('result.r7_good') };
+              else r7 = { key:7, status:'orange', pts:0.5, msg:this.tr('result.r7_warn') };
             }
             results.push(r7);
 
             // 8) H2 đầu tiên chứa từ khóa (0.5)
             const firstH2 = wrapper.querySelector('h2');
-            let r8 = { key:8, status:'orange', pts:0.25, msg:'Nên đưa từ khóa chính vào H2 đầu tiên' };
+            let r8 = { key:8, status:'orange', pts:0.25, msg:this.tr('result.r8_warn') };
             if (firstH2 && toLower(firstH2.textContent).includes(kMain)) {
-              r8 = { key:8, status:'green', pts:0.5, msg:'H2 đầu tiên chứa từ khóa chính' };
+              r8 = { key:8, status:'green', pts:0.5, msg:this.tr('result.r8_good') };
             }
             results.push(r8);
 
@@ -836,21 +1103,21 @@
             const lastPart = arrWords.slice(Math.max(arrWords.length - 100, 0)).join(' ').toLowerCase();
             const appearStart = kMain && firstPart.includes(kMain);
             const appearEnd = kMain && lastPart.includes(kMain);
-            let r9 = { key:9, status:'red', pts:0, msg:'Không xuất hiện ở cả đoạn đầu lẫn đoạn cuối' };
+            let r9 = { key:9, status:'red', pts:0, msg:this.tr('result.r9_bad') };
             if (appearStart && appearEnd) {
-              r9 = { key:9, status:'green', pts:0.5, msg:'Từ khóa chính xuất hiện ở đầu và cuối bài' };
+              r9 = { key:9, status:'green', pts:0.5, msg:this.tr('result.r9_good') };
             } else if (appearStart || appearEnd) {
-              r9 = { key:9, status:'orange', pts:0.25, msg:'Nên xuất hiện ở cả đoạn đầu và đoạn cuối' };
+              r9 = { key:9, status:'orange', pts:0.25, msg:this.tr('result.r9_warn') };
             }
             results.push(r9);
 
             // 10) Hình ảnh & ALT chứa từ khóa (0.5)
             const imgs = Array.from(wrapper.querySelectorAll('img'));
-            let r10 = { key:10, status:'red', pts:0, msg:'Không có hình ảnh nào' };
+            let r10 = { key:10, status:'red', pts:0, msg:this.tr('result.r10_bad') };
             if (imgs.length) {
               const hasAlt = imgs.some(img => toLower(img.getAttribute('alt') || '').includes(kMain));
-              if (hasAlt) r10 = { key:10, status:'green', pts:0.5, msg:'Có ảnh với ALT chứa từ khóa chính' };
-              else r10 = { key:10, status:'orange', pts:0.25, msg:'Nên bổ sung từ khóa chính trong ALT ảnh' };
+              if (hasAlt) r10 = { key:10, status:'green', pts:0.5, msg:this.tr('result.r10_good') };
+              else r10 = { key:10, status:'orange', pts:0.25, msg:this.tr('result.r10_warn') };
             }
             results.push(r10);
 
@@ -868,8 +1135,8 @@
               try { const d = new URL(href).hostname; return baseDomain ? (d && d !== baseDomain) : true; } catch { return false; }
             };
             const hasExternal = anchors.some(a => isExternal(a.getAttribute('href')));
-            let r11 = { key:11, status:'orange', pts:0.25, msg:'Nên có liên kết ngoài domain' };
-            if (hasExternal) r11 = { key:11, status:'green', pts:0.5, msg:'Có ≥1 liên kết ngoài domain' };
+            let r11 = { key:11, status:'orange', pts:0.25, msg:this.tr('result.r11_warn') };
+            if (hasExternal) r11 = { key:11, status:'green', pts:0.5, msg:this.tr('result.r11_good') };
             results.push(r11);
 
             // 12) Liên kết nội bộ (internal) (0.5)
@@ -881,8 +1148,8 @@
               return true; // relative link treated as internal
             };
             const hasInternal = anchors.some(a => isInternal(a.getAttribute('href')));
-            let r12 = { key:12, status:'orange', pts:0.25, msg: hasValidUrl ? 'Nên có liên kết nội bộ' : 'Nên nhập link bài viết để kiểm tra SEO tốt hơn' };
-            if (hasValidUrl && hasInternal) r12 = { key:12, status:'green', pts:0.5, msg:'Có ≥1 liên kết nội bộ' };
+            let r12 = { key:12, status:'orange', pts:0.25, msg: hasValidUrl ? this.tr('result.r12_warn_valid') : this.tr('result.r12_warn_nourl') };
+            if (hasValidUrl && hasInternal) r12 = { key:12, status:'green', pts:0.5, msg:this.tr('result.r12_good') };
             results.push(r12);
 
             // 13) Mật độ từ khóa (%) (3.0) – chuẩn mới: 2.0–5.0% là Đạt
@@ -900,11 +1167,11 @@
               occ = (clean.match(rx) || []).length;
             }
             const density = totalWords > 0 ? (occ * kwWords / totalWords) * 100 : 0;
-            let r13 = { key:13, status:'red', pts:0, msg:`Mật độ từ khóa thấp (${density.toFixed(2)}%)` };
+            let r13 = { key:13, status:'red', pts:0, msg:this.trp('result.r13_low', density.toFixed(2)) };
             if (density >= 2.0 && density <= 6.0) {
-              r13 = { key:13, status:'green', pts:3.0, msg:`Mật độ từ khóa đạt yêu cầu (${density.toFixed(2)}%)` };
+              r13 = { key:13, status:'green', pts:3.0, msg:this.trp('result.r13_ok', density.toFixed(2)) };
             } else if (density > 6.0) {
-              r13 = { key:13, status:'orange', pts:1.5, msg:`Nên giảm mật độ từ khóa (${density.toFixed(2)}%)` };
+              r13 = { key:13, status:'orange', pts:1.5, msg:this.trp('result.r13_high', density.toFixed(2)) };
             }
             results.push(r13);
 
@@ -1001,18 +1268,18 @@
           getScoreDisplay(score) {
             const base = '/Icon SEO point/';
             if (score === 10) {
-              return { hint: 'Thưa ngài Master of SEO, ngài thật vô song!', icon: base + '10.png', tone: 'green' };
+              return { hint: this.tr('score.hint.master'), icon: base + '10.png', tone: 'green' };
             }
             if ((score >= 8.5 && score <= 9.5) || (score > 9.5 && score < 10)) {
-              return { hint: 'Thật tuyệt! Bạn là cây bút xuất sắc đó', icon: base + '9,0.png', tone: 'green' };
+              return { hint: this.tr('score.hint.great'), icon: base + '9,0.png', tone: 'green' };
             }
             if (score >= 5.0 && score <= 8.25) {
-              return { hint: 'Ayoo, dành thời gian cải thiện thêm chút nữa nha', icon: base + '7,5.png', tone: 'orange' };
+              return { hint: this.tr('score.hint.ok'), icon: base + '7,5.png', tone: 'orange' };
             }
             if (score >= 2.25 && score <= 4.75) {
-              return { hint: 'Úi, đừng publish bài viết này, hãy chỉnh sửa thêm', icon: base + '4,5.png', tone: 'red' };
+              return { hint: this.tr('score.hint.bad'), icon: base + '4,5.png', tone: 'red' };
             }
-            return { hint: 'Ơ bạn ơi, viết lách như này có lỗi với tổ nghề đấy', icon: base + '2,0.png', tone: 'red' };
+            return { hint: this.tr('score.hint.worst'), icon: base + '2,0.png', tone: 'red' };
           }
         }
       });
