@@ -179,27 +179,6 @@
       .field-info.seo-good .tiny:first-child { 
         color: var(--green); 
       }
-      /* Coffee modal */
-      .coffee-modal { position: fixed; inset: 0; background: rgba(31,35,48,.42); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-      .coffee-modal.hidden { display: none; }
-      .coffee-dialog { position: relative; background: #fff; border-radius: 16px; padding: 40px 24px; max-width: 640px; width: 92%; box-shadow: 0 20px 40px rgba(0,0,0,.20); text-align: center; border: 2px solid rgba(108,89,217,.3); }
-      .coffee-close { position: absolute; top: 14px; right: 16px; font-size: 18px; color: #8a93a5; cursor: pointer; }
-      .coffee-hero { width: 100%; max-height: 320px; object-fit: contain; margin: 10px 0 22px; }
-      .coffee-title { font-weight: 800; color: var(--primary); letter-spacing: 2px; margin-bottom: 8px; font-size: 18px; text-transform: uppercase; }
-      .coffee-hey { font-weight: 800; color: var(--primary); letter-spacing: .6px; margin: 6px 0 12px; font-size: 22px; }
-      .coffee-sub { color: #6b7280; font-size: 14px; margin-bottom: 14px; line-height: 1.6; padding: 0 30px; }
-      .coffee-sub small { display: block; color: #8a93a5; margin-top: 6px; font-size: inherit;}
-      .coffee-sub.coffee-support { margin-top: 8px; margin-bottom: 6px; }
-      .coffee-sub.coffee-note { margin-top: 14px; }
-      .coffee-actions .btn { min-height: 50px; border-radius: 16px; padding: 14px 22px; font-size: 14px; box-shadow: 0 6px 16px rgba(108,89,217,.35); display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
-      .coffee-actions .btn:hover { text-decoration: none; }
-      .coffee-actions .btn .cup { font-size: 20px; }
-      /* Floating Buy me a coffee button */
-      .coffee-fab { position: fixed; right: 24px; bottom: 24px; background: var(--primary); color: #fff; border: 2px solid rgba(108,89,217,.45); border-radius: 999px; padding: 10px 12px; font-weight: 300; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 10px 24px rgba(36,61,114,.35); z-index: 9998; text-decoration: none; font-size: 14px; }
-      .coffee-fab:hover { background: var(--primary-700); }
-      .coffee-fab .divider { width: 1px; height: 18px; background: rgba(255,255,255,.5); }
-      .coffee-fab .icon { width: 20px; height: 20px; object-fit: contain; }
-      .coffee-fab .emoji { font-size: 20px; line-height: 1; }
 
       /* Guide modal */
       .guide-modal { position: fixed; inset: 0; background: rgba(31,35,48,.42); display: flex; align-items: center; justify-content: center; z-index: 9999; }
@@ -215,12 +194,6 @@
       .guide-table col.criteria-col { width: 33.33%; }
       .guide-table col.content-col { width: 66.67%; }
 
-      /* Updates modal */
-      .updates-modal { position: fixed; inset: 0; background: rgba(31,35,48,.42); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-      .updates-modal.hidden { display: none; }
-      .updates-dialog { position: relative; background: #fff; border-radius: 16px; padding: 0; max-width: 980px; width: 94%; box-shadow: 0 20px 40px rgba(0,0,0,.20); border: 2px solid rgba(108,89,217,.3); overflow: hidden; }
-      .updates-close { position: absolute; top: 12px; right: 14px; font-size: 22px; color: #8a93a5; cursor: pointer; }
-      .updates-img { display: block; width: 100%; height: auto; }
   
       </style>
   </head>
@@ -232,10 +205,6 @@
         <a id="guideLink" href="#guide" class="header-btn">
           <img src="Icon SEO point/vuesax/linear/document-text.png" alt="Guide" />
           <span id="guideText"></span>
-        </a>
-        <a id="nextLink" href="#next" class="header-btn">
-          <img src="Icon SEO point/Icon.png" alt="What's next" />
-          <span id="nextText"></span>
         </a>
         <button id="langToggle" class="header-btn" style="background:none;border:none;padding:0;cursor:pointer">
           <span id="langText"></span>
@@ -361,13 +330,6 @@
       <div class="footer">{{ tr('footer.text') }}</div>
     </div>
 
-    <!-- Floating Buy me a coffee button -->
-    <a id="coffeeFab" href="#" class="coffee-fab" :aria-label="tr('coffee.fab')">
-      <span class="emoji">☕️</span>
-      <span class="divider"></span>
-      <span>{{ tr('coffee.fab') }}</span>
-    </a>
-
     <!-- Guide Modal -->
     <div id="guideModal" class="guide-modal hidden" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
       <div class="guide-dialog">
@@ -442,32 +404,6 @@
       </div>
     </div>
 
-    <!-- Updates Modal (What's next?) -->
-    <div id="updatesModal" class="updates-modal hidden" role="dialog" aria-modal="true">
-      <div class="updates-dialog">
-        <div id="updatesClose" class="updates-close" :aria-label="tr('aria.close')">×</div>
-        <img src="Icon SEO point/WhatNext.jpg" alt="What's next" class="updates-img" />
-      </div>
-    </div>
-
-    <!-- Coffee Modal -->
-    <div id="coffeeModal" class="coffee-modal hidden" role="dialog" aria-modal="true" aria-labelledby="coffeeTitle">
-      <div class="coffee-dialog">
-        <div id="coffeeClose" class="coffee-close" :aria-label="tr('aria.close')">×</div>
-        <div id="coffeeTitle" class="coffee-title">{{ tr('coffee.title') }}</div>
-        <img src="Icon SEO point/Group 5.png" alt="Coffee illustration" class="coffee-hero" />
-        <div class="coffee-body">
-          <div class="coffee-hey">{{ tr('coffee.hey') }}</div>
-          <div class="coffee-sub">{{ tr('coffee.sub') }}</div>
-          <div class="coffee-sub coffee-support"><small>{{ tr('coffee.support') }}</small></div>
-        </div>
-        <div class="coffee-actions">
-          <a class="btn" href="https://buymeacoffee.com/nhuquynh" target="_blank" rel="noopener"><span>☕</span><span>{{ tr('coffee.cta') }}</span></a>
-        </div>
-        <div class="coffee-sub coffee-note"><small>{{ tr('coffee.note') }}</small></div>
-      </div>
-    </div>
-
     </div>
     <!-- TinyMCE (community) via jsDelivr -->
     <script src="https://cdn.jsdelivr.net/npm/tinymce@6.8.3/tinymce.min.js"></script>
@@ -482,7 +418,6 @@
       const I18N = {
         vi: {
           'menu.guide': 'Hướng dẫn',
-          'menu.next': "What's next?",
           'section.attributes': 'Thuộc tính',
           'label.mainKeyword': 'Từ khóa chính',
           'placeholder.mainKeyword': 'VD: Laptop giá rẻ',
@@ -508,7 +443,7 @@
           'criteria.good': 'Rất tốt',
           'criteria.improve': 'Cần cải thiện',
           'criteria.fail': 'Không đạt',
-          'footer.text': 'CheckSeoVn v1.1.8 · Cảm ơn bạn đã ủng hộ cà phê :x',
+          'footer.text': 'CheckSeoVn v1.1.8',
           'aria.close': 'Đóng',
           'guide.title': 'HƯỚNG DẪN ĐẠT ĐIỂM SEO TỐI ĐA',
           'guide.table.criteria': 'Tiêu chí',
@@ -539,13 +474,6 @@
           'guide.r12.content': 'Link tới nguồn đáng tin cậy khác domain.',
           'guide.r13.criteria': 'Bố cục',
           'guide.r13.content': 'Rõ ràng, dễ nhìn, có tiêu đề phụ và bullet points.',
-          'coffee.fab': 'Buy me a coffee',
-          'coffee.title': 'ĐANG PHÁT TRIỂN',
-          'coffee.hey': 'HEYYOOOO!',
-          'coffee.sub': 'Xin chào, tớ là Như Quỳnh - một cô gái làm truyền thông và yêu thích lập trình. Cảm ơn bạn đã quan tâm đến sản phẩm này ❤️ Tớ sẽ cố gắng cập nhật thêm các tính năng “so cool” trong tương lai!',
-          'coffee.support': 'Nếu thích & ủng hộ, cứ thoải mái nhé',
-          'coffee.cta': 'BUY ME A COFFEE',
-          'coffee.note': 'và bạn sẽ được thêm vào PREMIUM để thử các tính năng mới sớm.',
           'confirm.exit': 'Dữ liệu sẽ bị mất, bạn có chắc muốn thoát?',
           'score.hint.master': 'Thưa ngài Master of SEO, ngài thật vô song!',
           'score.hint.great': 'Thật tuyệt! Bạn là cây bút xuất sắc đó',
@@ -594,7 +522,6 @@
         },
         en: {
           'menu.guide': 'Guide',
-          'menu.next': "What's next?",
           'section.attributes': 'Attributes',
           'label.mainKeyword': 'Main keyword',
           'placeholder.mainKeyword': 'e.g. Cheap laptop',
@@ -620,7 +547,7 @@
           'criteria.good': 'Great',
           'criteria.improve': 'Needs improvement',
           'criteria.fail': 'Failed',
-          'footer.text': 'CheckSeoVn v1.1.8 · Thanks for your coffee support :x',
+          'footer.text': 'CheckSeoVn v1.1.8',
           'aria.close': 'Close',
           'guide.title': 'GUIDE TO MAX SEO SCORE',
           'guide.table.criteria': 'Criteria',
@@ -651,13 +578,6 @@
           'guide.r12.content': 'Link to trusted sources on other domains.',
           'guide.r13.criteria': 'Layout',
           'guide.r13.content': 'Clear, scannable, with subheadings and bullet points.',
-          'coffee.fab': 'Buy me a coffee',
-          'coffee.title': 'IN PROGRESS',
-          'coffee.hey': 'HEYYOOOO!',
-          'coffee.sub': "Hello, I'm Nhu Quynh — a girl in communications who loves coding. Thank you for checking out this product ❤️ I'll keep updating cool features in the future!",
-          'coffee.support': 'If you like & support, feel free',
-          'coffee.cta': 'BUY ME A COFFEE',
-          'coffee.note': 'and you will be listed in PREMIUM to try new features soon.',
           'confirm.exit': 'Unsaved data will be lost. Are you sure to leave?',
           'score.hint.master': 'Master of SEO — unmatched!',
           'score.hint.great': 'Awesome! You’re an excellent writer',
@@ -775,36 +695,16 @@
           // Thu hồi Object URL khi đóng trang
           window.addEventListener('unload', this.revokeObjectUrls);
           this.checkSEO();
-          // Bind Buy me a coffee modal
           try {
-            const link = document.getElementById('coffeeLink');
             const guideLink = document.getElementById('guideLink');
             const guideModal = document.getElementById('guideModal');
             const guideClose = document.getElementById('guideClose');
-            const fab = document.getElementById('coffeeFab');
-            const modal = document.getElementById('coffeeModal');
-            const close = document.getElementById('coffeeClose');
-            if (link && modal) {
-              link.addEventListener('click', (e) => { e.preventDefault(); modal.classList.remove('hidden'); });
-            }
-            if (fab && modal) {
-              fab.addEventListener('click', (e) => { e.preventDefault(); modal.classList.remove('hidden'); });
-            }
             // Guide modal bindings
             if (guideLink && guideModal) {
               guideLink.addEventListener('click', (e) => { e.preventDefault(); guideModal.classList.remove('hidden'); });
             }
             if (guideClose) guideClose.addEventListener('click', () => guideModal.classList.add('hidden'));
             if (guideModal) guideModal.addEventListener('click', (e) => { if (e.target === guideModal) guideModal.classList.add('hidden'); });
-            // Updates modal bindings (What's next?)
-            const nextLink = document.getElementById('nextLink');
-            const updatesModal = document.getElementById('updatesModal');
-            const updatesClose = document.getElementById('updatesClose');
-            if (nextLink && updatesModal) {
-              nextLink.addEventListener('click', (e) => { e.preventDefault(); updatesModal.classList.remove('hidden'); });
-            }
-            if (updatesClose) updatesClose.addEventListener('click', () => updatesModal.classList.add('hidden'));
-            if (updatesModal) updatesModal.addEventListener('click', (e) => { if (e.target === updatesModal) updatesModal.classList.add('hidden'); });
             // Prevent selection & copy inside guide dialog
             if (guideModal) {
               const dialog = guideModal.querySelector('.guide-dialog');
@@ -817,8 +717,6 @@
                 });
               }
             }
-            if (close) close.addEventListener('click', () => modal.classList.add('hidden'));
-            if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
           } catch {}
         },
         watch: {
@@ -843,10 +741,8 @@
           refreshHeaderTexts() {
             try {
               const guide = document.getElementById('guideText');
-              const next = document.getElementById('nextText');
               const langText = document.getElementById('langText');
               if (guide) guide.textContent = this.tr('menu.guide');
-              if (next) next.textContent = this.tr('menu.next');
               if (langText) langText.textContent = (this.lang === 'vi' ? 'English' : 'Tiếng Việt');
             } catch {}
           },
@@ -1267,7 +1163,7 @@
             return contentWords >= 300; // Giả sử nội dung tốt cần ít nhất 300 từ
           },
           getScoreDisplay(score) {
-            const base = '/Icon SEO point/';
+            const base = 'Icon SEO point/';
             if (score === 10) {
               return { hint: this.tr('score.hint.master'), icon: base + '10.png', tone: 'green' };
             }
